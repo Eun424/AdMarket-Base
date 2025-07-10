@@ -1,69 +1,26 @@
-import { Children, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { createBrowserRouter, RouterProvider } from 'react-router'
-import Login from './auth/Login'
-import Signup from './auth/Signup'
-import LandingPage from './pages/LandingPage'
-import Rootlayout from './layout/Rootlayout'
-import FAQs from './pages/FAQs'
-import Terms from './pages/Terms'
-import SafetyTips from './pages/SafetyTips'
-import AboutUs from './pages/AboutUs'
+import { createBrowserRouter, RouterProvider } from "react-router";
+import LandingPage from "./pages/LandingPage";
+import AboutUs from "./pages/AboutUs";
+import Login from "./auth/Login";
+import Signup from "./auth/Signup";
+import Rootlayout from "./layout/Rootlayout";
 
 function App() {
   const router = createBrowserRouter([
+    { path: "/", element: <LandingPage /> },
+
     {
-      path: '/',
+      path: "/aboutus",
       element: <Rootlayout />,
-      children: [
-        {
-          index: true,
-          element: <LandingPage />
-        },
-      ]
+      children: [{ path: "", element: <AboutUs /> }],
     },
-    {
-      path: '/Faqs',
-      element: <FAQs />
-    },
-    {
-      path: '/terms',
-      element: <Terms />
-    },
-    {
-      path: '/tips',
-      element: <SafetyTips />
-    },
+    // { path: "aboutus",
+    //    element: <AboutUs /> },
+    { path: "login", element: <Login /> },
+    { path: "signup", element: <Signup /> },
+  ]);
 
-    {
-    path: '/aboutus',
-    element: <AboutUs />,
-  },
-    {
-      path: '/login',
-      element: <Login />
-    },
-    {
-      path: '/signup',
-      element: <Signup />
-    }
-  ])
-
-
-
-
-
-
-
-
-
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  )
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
