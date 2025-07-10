@@ -10,6 +10,7 @@ import Rootlayout from './layout/Rootlayout'
 import FAQs from './pages/FAQs'
 import Terms from './pages/Terms'
 import SafetyTips from './pages/SafetyTips'
+import AboutUs from './pages/AboutUs'
 
 function App() {
   const router = createBrowserRouter([
@@ -35,6 +36,11 @@ function App() {
       path: '/tips',
       element: <SafetyTips />
     },
+
+    {
+    path: '/aboutus',
+    element: <AboutUs />,
+  },
     {
       path: '/login',
       element: <Login />

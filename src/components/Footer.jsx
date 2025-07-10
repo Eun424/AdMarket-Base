@@ -25,7 +25,7 @@ const Footer = () => {
   </aside>
   <nav>
     <h6 className="footer-title">About Us</h6>
-    <a className="link link-hover">About Adspot</a>
+    <Link to= './aboutus' className="link link-hover">About Adspot</Link>
     <Link to='/terms' className="link link-hover">Terms and Conditions</Link>
   </nav>
   <nav>
