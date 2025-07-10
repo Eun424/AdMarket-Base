@@ -1,4 +1,5 @@
 import React from 'react';
+import Legal from '../components/Legal';
 
 const faqs = [
   {
@@ -29,7 +30,9 @@ const faqs = [
 
 const FAQs = () => {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
+    <div>
+      <Legal>
+    <div className="max-w-3xl mx-auto  px-6 py-12 bg-white rounded-2xl shadow-lg mt-10 mb-20">
       <h2 className="text-3xl font-bold mb-6 text-center text-sky-700">Frequently Asked Questions</h2>
       <div className="space-y-6">
         {faqs.map((faq, index) => (
@@ -39,6 +42,8 @@ const FAQs = () => {
           </div>
         ))}
       </div>
+    </div>
+    </Legal>
     </div>
   );
 };
