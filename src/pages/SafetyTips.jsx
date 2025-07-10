@@ -1,4 +1,5 @@
 import React from 'react';
+import Legal from '../components/Legal';
 
 const safetyTips = [
   "Always meet in a public, well-lit place on campus.",
@@ -13,15 +14,22 @@ const safetyTips = [
 
 const SafetyTips = () => {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <h2 className="text-3xl font-bold mb-6 text-center text-sky-800">Safety Tips for Campus Mart Users</h2>
-      <ul className="space-y-4 list-disc list-inside text-gray-700">
-        {safetyTips.map((tip, index) => (
-          <li key={index} className="bg-blue-50 p-4 rounded-md border-l-4 border-blue-500 shadow-sm">
-            {tip}
-          </li>
-        ))}
-      </ul>
+    <div>
+      <Legal>
+        <div className="max-w-3xl mx-auto px-6 py-12 bg-white rounded-2xl shadow-lg mt-10 mb-20">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center text-[#024658]">Safety Tips for Campus Mart Users</h2>
+          <ul className="space-y-4 text-gray-700">
+            {safetyTips.map((tip, index) => (
+              <li
+                key={index}
+                className="bg-[#F0F9FF] p-4 rounded-lg border-l-4 border-[#38BDF8] shadow-sm transition-all hover:bg-[#e0f4ff]"
+              >
+                {tip}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Legal>
     </div>
   );
 };
