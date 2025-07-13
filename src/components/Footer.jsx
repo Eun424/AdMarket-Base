@@ -4,37 +4,43 @@ import logo from '../assets/images/logo3.png'
 
 const Footer = () => {
   return (
-    <div>
-        <footer className="footer sm:footer-horizontal bg-[#9cd2f693] text-base-content p-10">
-  <aside>
-    <div>
-                        <img src={logo} alt="Logo" className='h-20 w-auto object-contain' />
-                    </div>
-    <p>
-      Campus Mart
-      <br />
-      Your Trusted Campus Marketplace!!
-    </p>
-  </aside>
-  <nav>
-    <h6 className="footer-title">About Us</h6>
-    <Link to= './aboutus' className="link link-hover">About CampusMart </Link>
-    <Link to='/terms' className="link link-hover">Terms and Conditions</Link>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Support</h6>
-    <a className="link link-hover">Contact Us</a>
-    <Link to='/tips' className="link link-hover">Safety Tips</Link>
-    <Link to='/Faqs' className="link link-hover">FAQs</Link>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Resources</h6>
-    <a className="link link-hover">Instagram</a>
-    <a className="link link-hover">LinkedIn</a>
-    <a className="link link-hover">Facebook</a>
-  </nav>
-</footer>
-    </div>
+    <footer className="bg-[#9cd2f693] text-gray-800 pt-10 px-6 md:px-16">
+      <div className="max-w-7xl mx-auto grid gap-10 md:grid-cols-4 grid-cols-1   pb-10">
+        <div className="space-y-4">
+          <img src={logo} alt="Logo" className="h-20 w-auto object-contain" />
+          <p className="text-sm">
+            <span className="font-semibold text-lg">Campus Mart</span><br />
+            Your Trusted Campus Marketplace!!
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <h6 className="text-lg font-bold mb-2 text-blue-900">Quick Links</h6>
+          <Link to='/' className="block text-sm hover:text-blue-700 transition">Home</Link>
+          <Link to='/aboutus' className="block text-sm hover:text-blue-700 transition">About CampusMart</Link>
+        </div>
+
+        <div className="space-y-2">
+          <h6 className="text-lg font-bold mb-2 text-blue-900">Support</h6>
+          <a className="block text-sm hover:text-blue-700 transition" href="#">Contact Us</a>
+          <a className="block text-sm hover:text-blue-700 transition" href="#">Instagram</a>
+          <a className="block text-sm hover:text-blue-700 transition" href="#">LinkedIn</a>
+          <a className="block text-sm hover:text-blue-700 transition" href="#">Facebook</a>
+        </div>
+
+        <div className="space-y-2">
+          <h6 className="text-lg font-bold mb-2 text-blue-900">Resources</h6>
+          <Link to='/terms' className="block text-sm hover:text-blue-700 transition">Terms and Conditions</Link>
+          <Link to='/tips' className="block text-sm hover:text-blue-700 transition">Safety Tips</Link>
+          <Link to='/Faqs' className="block text-sm hover:text-blue-700 transition">FAQs</Link>
+        </div>
+      </div>
+
+      <div className="text-center text-sm text-gray-600 mt-6 py-4  border-gray-300 border-t ">
+        <p className="mb-1">Your Trusted Campus Marketplace!!</p>
+        <p>&copy; 2025 <span className="font-semibold text-blue-800">Campus Mart</span>. All rights reserved.</p>
+      </div>
+    </footer>
   )
 }
 

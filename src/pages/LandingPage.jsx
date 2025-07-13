@@ -6,9 +6,9 @@ import Footer from "../components/Footer";
 const LandingPage = () => {
   return (
     <div>
-      <Navbar />
+      
       <Categories />
-      <Footer />
+    
     </div>
   );
 };
