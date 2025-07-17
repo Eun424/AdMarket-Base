@@ -1,5 +1,6 @@
 import React from 'react';
 import Legal from '../components/Legal';
+import Footer from '../components/Footer';
 
 const Terms = () => {
   return (
@@ -63,6 +64,7 @@ const Terms = () => {
           </section>
         </div>
       </Legal>
+      <Footer/>
     </div>
   );
 };
