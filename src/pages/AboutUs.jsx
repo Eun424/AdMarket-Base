@@ -11,20 +11,19 @@ const AboutUs = () => {
     <div className="text-gray-700">
       
       <div
-        className="relative h-[400px] bg-cover bg-center"
-        style={{ backgroundImage: `url(${overlayImage})` }}
-      >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-white/70 backdrop-blur-sm px-6 py-8 rounded-md text-center max-w-2xl mx-auto">
-            <h1 className="text-4xl font-bold text-blue-900 mb-4">About Us</h1>
-            <p className="text-lg text-gray-700">
-              CampusMart connects student entrepreneurs with buyers across
-              universities. Discover, promote, and shop student-owned products
-              on your campus!
-            </p>
-          </div>
-        </div>
-      </div>
+  className="relative h-[400px] bg-cover bg-center flex items-center justify-center px-4 bg-gradient-to-r from-sky-50 to-blue-100"
+  style={{ backgroundImage: `url(${overlayImage})` }}
+>
+  <div className="absolute inset-0 bg-black/40 z-0" />
+
+  <div className="relative z-10 bg-white/90 backdrop-blur-md rounded-xl px-8 py-10 max-w-3xl text-center shadow-lg">
+    <h1 className="text-4xl font-bold text-blue-900 mb-4">About Us</h1>
+    <p className="text-lg text-gray-800 leading-relaxed">
+      CampusMart connects student entrepreneurs with buyers across universities.
+      Discover, promote, and shop student-owned products on your campus!
+    </p>
+  </div>
+</div>
 
       
       <div className="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-12 items-center">

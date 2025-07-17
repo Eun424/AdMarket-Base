@@ -1,23 +1,44 @@
 import React from 'react'
+import AuthStructure from './AuthStructure'
 
 const Login = () => {
   return (
-    <div className="min-h-screen bg-base-200 flex justify-center items-center">
-      <form className="w-full max-w-md px-4">
-        <fieldset className="bg-[#0C1C3D] border-base-300 rounded-2xl border p-8 shadow-lg">
-          <h2 className="text-center font-semibold text-3xl text-white mb-6">Login</h2>
+    <div>
+      <AuthStructure>
+    <div className="w-full md:w-1/2 p-8 mt-3">
+          <h2 className="text-3xl font-semibold text-[#3690cc] mb-6 text-center">Login</h2>
 
-          <label className="label text-white">Email</label>
-          <input type="email" className="input input-bordered w-full" placeholder="Email" />
+          <form className="space-y-6">
+           
+           <label htmlFor="" className='text-sky-900'>Email</label>
+            <input
+              type="email"
+              placeholder="Please enter your email"
+              className="w-full px-4 py-3 mt-1 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+            />
+             <label htmlFor="" className='text-sky-900'>Password</label>
+            <input
+              type="password"
+              placeholder="Please enter your password"
+              className="w-full px-4 py-3 mt-1 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+            />
 
-          <label className="label text-white mt-4">Password</label>
-          <input type="password" className="input input-bordered w-full" placeholder="Password" />
+            <button
+              type="submit"
+              className="w-full py-3 bg-[#3690cc] hover:bg-blue-900 text-white font-semibold rounded-md transition duration-200"
+            >
+              LOGIN
+            </button>
 
-          <button className="btn btn-neutral bg-[#9CD2F6] mt-6 w-full border-0 text-[#0C1C3D]">Login</button>
-
-          <p className="text-center mt-4 text-white">Don't have an account? <span className="underline cursor-pointer">Sign Up</span></p>
-        </fieldset>
-      </form>
+            <p className="text-center text-sm ">
+              Don't have an account?{' '}
+              <a href="/signup" className="text-[#1778b9] font-semibold underline">
+                Signup
+              </a>
+            </p>
+          </form>
+        </div>
+    </AuthStructure>
     </div>
   )
 }
