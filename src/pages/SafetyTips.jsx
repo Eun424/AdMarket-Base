@@ -1,5 +1,6 @@
 import React from 'react';
 import Legal from '../components/Legal';
+import Footer from '../components/Footer';
 
 const safetyTips = [
   "Always meet in a public, well-lit place on campus.",
@@ -30,6 +31,7 @@ const SafetyTips = () => {
           </ul>
         </div>
       </Legal>
+      <Footer/>
     </div>
   );
 };
