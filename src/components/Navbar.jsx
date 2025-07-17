@@ -13,7 +13,7 @@ const Navbar = () => {
 
                 <div>
                     <Link to='/signup' className='bg-[#9CD2F6] text-black font-bold py-3 px-10  rounded hover:bg-[#82c9f2] transition duration-200 text-lg'>
-                        SELL
+                        SELLER
                     </Link>
                 </div>
             </div>

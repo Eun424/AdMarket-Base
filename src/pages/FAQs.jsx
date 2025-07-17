@@ -1,5 +1,6 @@
 import React from 'react';
 import Legal from '../components/Legal';
+import Footer from '../components/Footer';
 
 const faqs = [
   {
@@ -44,6 +45,7 @@ const FAQs = () => {
       </div>
     </div>
     </Legal>
+    <Footer/>
     </div>
   );
 };
