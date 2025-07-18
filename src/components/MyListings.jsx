@@ -15,7 +15,7 @@ const lists = [
     productName: 'Cerave Facial Moisturizer',
     category: 'Beauty and Personal Care',
     subCategory: 'Skincare',
-    price: '200Gh',
+    price: 'Gh160',
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const lists = [
     productName: 'Touch perfume oil',
     category: 'Beauty and Personal Care',
     subCategory: 'Fragrances',
-    price: '200Gh',
+    price: 'Gh15',
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const lists = [
     productName: 'Simple acne cleanser',
     category: 'Beauty and Personal Care',
     subCategory: 'Skincare',
-    price: '200Gh',
+    price: 'Gh200',
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ const lists = [
     productName: 'Bio-oil',
     category: 'Beauty and Personal Care',
     subCategory: 'Skincare',
-    price: '200Gh',
+    price: 'Gh30',
   },
   {
     id: 5,
@@ -47,7 +47,7 @@ const lists = [
     productName: 'Carrot shower gel',
     category: 'Beauty and Personal Care',
     subCategory: 'Bath and body',
-    price: '200Gh',
+    price: 'Gh60',
   },
   {
     id: 6,
@@ -55,7 +55,7 @@ const lists = [
     productName: '12-inches wet curls',
     category: 'Beauty and Personal Care',
     subCategory: 'Hair Beauty',
-    price: '200Gh',
+    price: 'Gh600',
   },
 ];
 

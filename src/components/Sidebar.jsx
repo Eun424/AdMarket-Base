@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from '../assets/images/logo3.png';
+import logo from '../assets/images/1.png';
 import { NavLink } from 'react-router';
 import { MdAddShoppingCart, MdDashboard } from 'react-icons/md';
 import { FaRectangleList } from 'react-icons/fa6';
