@@ -135,7 +135,7 @@ const AboutUs = () => {
                 <span className="text-blue-900 font-medium">
                   Political Science and Chinese
                 </span>
-                . Co-creator of CampusMart, driven by a passion for tech and
+                . Co-founder of CampusMart, driven by a passion for tech and
                 student empowerment.
               </p>
               <div className="flex justify-center gap-4 mt-4 text-2xl text-blue-600">

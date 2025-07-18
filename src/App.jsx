@@ -13,7 +13,7 @@ import MyListings from "./components/MyListings";
 import Report from "./components/Report";
 import Logout from "./auth/Logout";
 import Profile from "./components/Profile";
-import AddNew from "./components/AddNew";
+import AddProduct from "./components/AddProduct";
 
 function App() {
   const router = createBrowserRouter([
@@ -71,7 +71,7 @@ function App() {
         },
         {
           path: 'add',
-          element: <AddNew/>
+          element: <AddProduct/>
         },
         {
           path: 'profile',
