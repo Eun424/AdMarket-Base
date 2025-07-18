@@ -2,11 +2,12 @@ import React from 'react'
 import { FaEye } from 'react-icons/fa6'
 import { MdEditDocument } from 'react-icons/md'
 import { TiPin } from 'react-icons/ti'
+import {Link} from 'react-router'
 
 const Dashboard = () => {
   return (
   <div className="p-6">
-  <h2 className="text-2xl font-bold mb-4">Welcome, Eunice!</h2>
+  <h2 className="text-2xl font-bold mb-4">Welcome, Eunice!</h2> 
 
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
     <div className="bg-white p-4 rounded shadow">
@@ -24,8 +25,8 @@ const Dashboard = () => {
   </div>
 
   
-  <div className="flex gap-4 mb-6">
-    <button className="bg-blue-600 text-white px-4 py-2 rounded">+ Add New Listing</button>
+  <div className="flex gap-4 mb-6"> 
+    <Link to= "/dashboard/add" className="bg-blue-600 text-white px-4 py-2 rounded">+ Add New Listing</Link>
     <button className="border px-4 py-2 rounded">View My Store</button>
   </div>
 
