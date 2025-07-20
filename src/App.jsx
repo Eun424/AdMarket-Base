@@ -8,12 +8,16 @@ import Terms from "./pages/Terms";
 import SafetyTips from "./pages/SafetyTips";
 import FAQs from "./pages/FAQs";
 import DashboardLayout from "./layout/DashboardLayout";
-import Dashboard from "./components/Dashboard";
-import MyListings from "./components/MyListings";
-import Report from "./components/Report";
 import Logout from "./auth/Logout";
-import Profile from "./components/Profile";
-import AddProduct from "./components/AddProduct";
+import Dashboard from "./components/DashboardComponent/Dashboard";
+import MyListings from "./components/DashboardComponent/MyListings";
+import Report from "./components/DashboardComponent/Report";
+import AddProduct from "./components/DashboardComponent/AddProduct";
+import Profile from "./components/ProfileDashboard/Profile";
+import ProfileLayout from "./layout/ProfileLayout";
+import Security from "./components/ProfileDashboard/Security";
+import Preferences from "./components/ProfileDashboard/Preferences";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -59,27 +63,41 @@ function App() {
       children: [
         {
           index: true,
-          element: <Dashboard/>
+          element: <Dashboard />
         },
         {
           path: 'listings',
-          element: <MyListings/>
+          element: <MyListings />
         },
         {
           path: 'report',
-          element: <Report/>
+          element: <Report />
         },
         {
           path: 'add',
-          element: <AddProduct/>
+          element: <AddProduct />
         },
         {
           path: 'profile',
-          element: <Profile/>
+          element: <ProfileLayout />,
+          children: [
+            {
+              index: true,
+              element: <Profile />
+            },
+            {
+              path: 'security',
+              element: <Security />
+            },
+            {
+              path: 'preferences',
+              element: <Preferences />
+            }
+          ]
         },
         {
           path: 'logout',
-          element: <Logout/>
+          element: <Logout />
         }
       ]
     }

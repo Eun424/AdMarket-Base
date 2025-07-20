@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaEye } from 'react-icons/fa6'
 import { MdEditDocument } from 'react-icons/md'
 import { TiPin } from 'react-icons/ti'
 import {Link} from 'react-router'
+import AddProduct from '../DashboardComponent/AddProduct'
+import { IoCloseCircleSharp } from 'react-icons/io5'
 
 const Dashboard = () => {
+  const [modal, setModal] = useState(false)
+
   return (
   <div className="p-6">
   <h2 className="text-2xl font-bold mb-4">Welcome, Eunice!</h2> 
@@ -26,7 +30,8 @@ const Dashboard = () => {
 
   
   <div className="flex gap-4 mb-6"> 
-    <Link to= "/dashboard/add" className="bg-blue-600 text-white px-4 py-2 rounded">+ Add New Listing</Link>
+    <button  className="bg-blue-600 text-white px-4 py-2 rounded"
+    onClick={() => setModal(true)}>+ Add New Listing</button>
     <button className="border px-4 py-2 rounded">View My Store</button>
   </div>
 
@@ -39,6 +44,22 @@ const Dashboard = () => {
       <li className='flex items-center gap-1'><MdEditDocument className='text-purple-300' /> Profile updated - Yesterday</li>
     </ul>
   </div>
+     {modal && (
+        <div className="fixed inset-0 z-50 bg-black/40 bg-opacity-40 flex items-center justify-center">
+          <div className="relative bg-white p-4 rounded-lg shadow-xl max-h-screen overflow-auto">
+           
+            <button
+              onClick={() => setModal(false)}
+              className="absolute top-2 right-2 text-white bg-red-500 px-2 py-2 rounded-full hover:bg-red-600"
+            >
+              <IoCloseCircleSharp />
+            </button>
+
+           
+            <AddProduct />
+          </div>
+        </div>
+      )}
 </div>
 
   )

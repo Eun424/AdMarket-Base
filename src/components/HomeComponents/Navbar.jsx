@@ -1,7 +1,7 @@
 import React from 'react'
 import { IoIosSearch } from 'react-icons/io'
 import { Link } from 'react-router'
-import logo from '../assets/images/logo6.png'
+import logo from '../../assets/images/logo6.png'
 
 const Navbar = () => {
     return (
