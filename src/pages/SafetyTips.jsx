@@ -1,6 +1,6 @@
 import React from 'react';
 import Legal from '../components/Legal';
-import Footer from '../components/Footer';
+import Footer from '../components/HomeComponents/Footer';
 
 const safetyTips = [
   "Always meet in a public, well-lit place on campus.",

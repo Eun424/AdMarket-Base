@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import logo from '../assets/images/1.png';
+import logo from '../../assets/images/1.png';
 import { NavLink } from 'react-router';
 import { MdAddShoppingCart, MdDashboard } from 'react-icons/md';
 import { FaRectangleList } from 'react-icons/fa6';
 import { TbMessageReportFilled } from "react-icons/tb";
 import { CgProfile } from 'react-icons/cg';
-import bg from '../assets/images/bg1.jpg';
+import bg from '../../assets/images/bg1.jpg';
 import { IoIosLogOut } from 'react-icons/io';
 import { HiMenu } from 'react-icons/hi';
 
@@ -27,7 +27,7 @@ const Sidebar = () => {
           } md:translate-x-0 md:relative md:flex`}
       >
         <div
-          className='relative flex flex-col justify-between px-10 min-h-screen py-8 w-64 text-white'
+          className='relative flex flex-col justify-between px-10 min-h-screen py-8 w-75 text-white'
           style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
           <div className="absolute inset-0 bg-[#182B3E]/85 z-0"></div>
@@ -37,7 +37,7 @@ const Sidebar = () => {
               <img src={logo} alt="Logo" className='w-full h-20 object-contain mb-8' />
             </div>
 
-            <ul className='flex flex-col space-y-2 font-semibold text-md'>
+            <ul className='flex flex-col space-y-2 font-semibold text-lg'>
               <li>
                 <NavLink
                   to="/dashboard"
@@ -73,7 +73,7 @@ const Sidebar = () => {
                     }`
                   }
                 >
-                  <MdAddShoppingCart className='text-purple-500' />
+                  <MdAddShoppingCart className='text-[#f7a1f1]' />
                   Add New Listings
                 </NavLink>
               </li>

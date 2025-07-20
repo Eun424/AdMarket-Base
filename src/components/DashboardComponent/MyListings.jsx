@@ -1,12 +1,17 @@
 import React from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useState } from 'react';
 
-import beauty from '../assets/images/cerave.jpg';
-import fragrance from '../assets/images/fragrance.jpg';
-import cleanser from '../assets/images/simple.jpg';
-import oil from '../assets/images/Bio oli.jpg';
-import body from '../assets/images/body.jpg';
-import hair from '../assets/images/hair.jpg';
+import beauty from '../../assets/images/cerave.jpg';
+import fragrance from '../../assets/images/fragrance.jpg';
+import cleanser from '../../assets/images/simple.jpg';
+import oil from '../../assets/images/Bio oli.jpg';
+import body from '../../assets/images/body.jpg';
+import hair from '../../assets/images/hair.jpg';
+import { Link } from 'react-router';
+import AddProduct from '../DashboardComponent/AddProduct';
+
+
 
 const lists = [
   {
@@ -60,18 +65,22 @@ const lists = [
 ];
 
 const MyListings = () => {
+   const [showModal, setShowModal] = useState(false);
+
   return (
     <div className="p-2">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold text-cyan-900">My Listings</h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded">
+        <button className="bg-blue-600 text-white px-4 py-2 rounded"
+        onClick={() => setShowModal(true)}>
           + Add New Listing
         </button>
       </div>
 
-      <div className="overflow-x-auto rounded-md border border-gray-300">
-        <table className="min-w-full table-auto border-collapse">
-          <thead className="bg-gray-100 text-sm text-gray-600 text-left">
+      <div className=" rounded-md border border-gray-300 w-full">
+        <div className='overflow-x-auto w-full'>
+        <table className="w-full min-w-[600px] table-auto border-collapse">
+          <thead className="bg-gray-100  text-sm text-gray-600 text-left">
             <tr>
               <th className="p-3">Product Name</th>
               <th className="p-3">Category</th>
@@ -108,6 +117,24 @@ const MyListings = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+       {showModal && (
+        <div className="fixed inset-0 z-50 bg-black/40 bg-opacity-40 flex items-center justify-center">
+          <div className="relative bg-white p-4 rounded-lg shadow-xl max-h-screen overflow-auto">
+           
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-2 text-white bg-red-500 px-2 py-1 rounded-full hover:bg-red-600"
+            >
+              &times;
+            </button>
+
+           
+            <AddProduct />
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );
