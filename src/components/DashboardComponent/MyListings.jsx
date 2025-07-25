@@ -103,6 +103,8 @@ const MyListings = () => {
                     className="w-12 h-12 object-cover rounded"
                   />
                   <span>{item.productName}</span>
+                  
+                  
                 </td>
                 <td className="p-3">{item.category}</td>
                 <td className="p-3">{item.subCategory}</td>

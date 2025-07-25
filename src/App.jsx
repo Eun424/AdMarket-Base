@@ -17,6 +17,7 @@ import Profile from "./components/ProfileDashboard/Profile";
 import ProfileLayout from "./layout/ProfileLayout";
 import Security from "./components/ProfileDashboard/Security";
 import Preferences from "./components/ProfileDashboard/Preferences";
+import ProductDetail from "./pages/ProductDetail";
 
 
 function App() {
@@ -32,7 +33,11 @@ function App() {
         {
           path: '/aboutus',
           element: <AboutUs />
-        }
+        },
+        {
+            path: 'product',
+            element: <ProductDetail />
+            }
 
       ]
     },
@@ -77,6 +82,7 @@ function App() {
           path: 'add',
           element: <AddProduct />
         },
+        
         {
           path: 'profile',
           element: <ProfileLayout />,
@@ -93,6 +99,8 @@ function App() {
               path: 'preferences',
               element: <Preferences />
             }
+            
+            
           ]
         },
         {

@@ -104,10 +104,11 @@ const AddProduct = () => {
           onChange={handleChange}
           className="w-full bg-white text-black font-normal py-3 px-4 border border-gray-200 rounded-md"
         >
-          <option value="">Shoes, Accessories etc</option>
+          <option value="">Select Sub-Category</option>
           <option value="Gold necklace">Gold necklace</option>
           <option value="Silver earrings">Silver earrings</option>
           <option value="Watch">Watch</option>
+          <option value="Shoes">Shoes</option>
         </select>
 
         <input
@@ -130,7 +131,8 @@ const AddProduct = () => {
           <option value="Female">Female</option>
           <option value="Trans-gender">Trans-gender</option>
         </select>
-
+         
+         <label className="text-white font-normal">Add Product image</label>
         <input
           type="file"
           className="w-full bg-white text-black border border-gray-200 rounded-md py-3 px-4"
