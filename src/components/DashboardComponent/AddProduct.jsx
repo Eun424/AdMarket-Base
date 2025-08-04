@@ -1,146 +1,135 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import React, { useState } from "react";
 
-const AddProduct = () => {
-  const navigate = useNavigate();
+const AddListingForm = () => {
+  const categories = [
+    {
+      name: "Home Appliances",
+      subcategories: ["Fridges", "Microwaves", "Fans"],
+    },
+    {
+      name: "Fashion",
+      subcategories: ["Men", "Women", "Kids"],
+    },
+    {
+      name: "Beauty and Personal Care",
+      subcategories: ["Skin Care", "Hair Products", "Makeup"],
+    },
+    {
+      name: "Food and Edibles",
+      subcategories: ["Snacks", "Groceries", "Drinks"],
+    },
+    {
+      name: "Services",
+      subcategories: ["Hair Styling", "Laundry", "Repairs"],
+    },
+    {
+      name: "Electronics",
+      subcategories: ["Phones", "Laptops", "Accessories"],
+    },
+  ];
 
-  const [formData, setFormData] = useState({
-    productName: "",
-    description: "",
-    price: "",
-    campus: "",
-    category: "",
-    type: "",
-    brand: "",
-    gender: "",
-  });
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategories, setSelectedSubcategories] = useState([]);
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (
-      !formData.productName ||
-      !formData.description ||
-      !formData.price ||
-      !formData.campus ||
-      !formData.category ||
-      !formData.type ||
-      !formData.brand ||
-      !formData.gender
-    ) {
-      alert("Please fill in all fields before submitting.");
-      return;
-    }
-
-    navigate("/dashboard"); 
-    
+  const handleCategoryChange = (e) => {
+    const selected = e.target.value;
+    setSelectedCategory(selected);
+    const found = categories.find((cat) => cat.name === selected);
+    setSelectedSubcategories(found ? found.subcategories : []);
+    setSelectedSubcategory("");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-[rgb(46,123,175)] w-full max-w-lg p-6 space-y-4 rounded-md"
-      >
-        <h2 className="text-2xl font-semibold text-white text-center">
-          Add Product
-        </h2>
+    <div className="bg-white w-full max-w-4xl p-6 rounded-lg overflow-auto">
+      <div className="mb-4">
+        <h2 className="text-2xl font-bold text-center w-full">New Product</h2>
+      </div>
 
-        <input
-          type="text"
-          name="productName"
-          placeholder="Enter Product Name"
-          value={formData.productName}
-          onChange={handleChange}
-          className="w-full bg-white text-black font-normal py-3 px-4 border border-gray-200 rounded-md"
-        />
+      <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-gray-700 mb-1">Product Name</label>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            placeholder="Enter product name"
+          />
+        </div>
 
-        <input
-          type="text"
-          name="description"
-          placeholder="Enter Product Description"
-          value={formData.description}
-          onChange={handleChange}
-          className="w-full bg-white text-black font-normal py-3 px-4 border border-gray-200 rounded-md"
-        />
+        <div>
+          <label className="block text-gray-700 mb-1">Price</label>
+          <input
+            type="number"
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            placeholder="Enter price"
+          />
+        </div>
 
-        <input
-          type="text"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleChange}
-          className="w-full bg-white text-black font-normal py-3 px-4 border border-gray-200 rounded-md"
-        />
+        <div>
+          <label className="block text-gray-700 mb-1">Category</label>
+          <select
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+          >
+            <option value="">Select Category</option>
+            {categories.map((cat) => (
+              <option key={cat.name} value={cat.name}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <input
-          type="text"
-          name="campus"
-          placeholder="University/Campus"
-          value={formData.campus}
-          onChange={handleChange}
-          className="w-full bg-white text-black font-normal py-3 px-4 border border-gray-200 rounded-md"
-        />
+        {selectedSubcategories.length > 0 ? (
+          <>
+            <div className="w-full">
+              <label className="block text-gray-700 mb-1">Subcategory</label>
+              <select
+                className="w-full border border-gray-300 rounded px-3 py-2"
+                value={selectedSubcategory}
+                onChange={(e) => setSelectedSubcategory(e.target.value)}
+              >
+                <option value="">Select Subcategory</option>
+                {selectedSubcategories.map((sub) => (
+                  <option key={sub}>{sub}</option>
+                ))}
+              </select>
+            </div>
 
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          className="w-full bg-white text-black font-normal py-3 px-4 border border-gray-200 rounded-md"
-        >
-          <option value="">Select Fashion Category</option>
-          <option value="Men">Men</option>
-          <option value="Women">Women</option>
-          <option value="Unisex">Unisex</option>
-        </select>
+            <div className="w-full">
+              <label className="block text-gray-700 mb-1">Upload File</label>
+              <input
+                type="file"
+                className="w-full border border-gray-300 rounded px-3 py-2"
+              />
+              <p className="text-sm text-gray-500 mt-1">Max 18MB</p>
+            </div>
+          </>
+        ) : (
+          <div className="md:col-span-2">
+            <label className="block text-gray-700 mb-1">Upload File</label>
+            <input
+              type="file"
+              className="w-full border border-gray-300 rounded px-3 py-2"
+            />
+            <p className="text-sm text-gray-500 mt-1">Max 18MB</p>
+          </div>
+        )}
 
-        <select
-          name="type"
-          value={formData.type}
-          onChange={handleChange}
-          className="w-full bg-white text-black font-normal py-3 px-4 border border-gray-200 rounded-md"
-        >
-          <option value="">Shoes, Accessories etc</option>
-          <option value="Gold necklace">Gold necklace</option>
-          <option value="Silver earrings">Silver earrings</option>
-          <option value="Watch">Watch</option>
-        </select>
+        <div className="md:col-span-2">
+          <label className="block text-gray-700 mb-1">Description</label>
+          <textarea
+            rows={4}
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            placeholder="Enter product description"
+          ></textarea>
+        </div>
 
-        <input
-          type="text"
-          name="brand"
-          placeholder="Brand name"
-          value={formData.brand}
-          onChange={handleChange}
-          className="w-full bg-white text-black font-normal py-3 px-4 border border-gray-200 rounded-md"
-        />
-
-        <select
-          name="gender"
-          value={formData.gender}
-          onChange={handleChange}
-          className="w-full bg-white text-black font-normal py-3 px-4 border border-gray-200 rounded-md"
-        >
-          <option value="">Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Trans-gender">Trans-gender</option>
-        </select>
-
-        <input
-          type="file"
-          className="w-full bg-white text-black border border-gray-200 rounded-md py-3 px-4"
-        />
-        <label className="text-white font-normal">Max size 2MB</label>
-
-        <div className="flex justify-center">
+        <div className="md:col-span-2 flex justify-center">
           <button
             type="submit"
-            className="px-5 py-2 rounded-lg bg-[#3690cc] hover:bg-blue-900 text-white transition duration-200 font-semibold"
+            className="bg-gray-800 text-white px-6 py-2 rounded hover:bg-gray-700 transition"
           >
             Add Product
           </button>
@@ -150,4 +139,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default AddListingForm;

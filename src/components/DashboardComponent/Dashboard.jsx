@@ -45,18 +45,17 @@ const Dashboard = () => {
     </ul>
   </div>
      {modal && (
-        <div className="fixed inset-0 z-50 bg-black/40 bg-opacity-40 flex items-center justify-center">
-          <div className="relative bg-white p-4 rounded-lg shadow-xl max-h-screen overflow-auto">
-           
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="relative bg-white p-4 rounded-lg shadow-xl max-h-screen overflow-auto w-full max-w-2xl">
             <button
               onClick={() => setModal(false)}
-              className="absolute top-2 right-2 text-white bg-red-500 px-2 py-2 rounded-full hover:bg-red-600"
+              className="absolute top-2 right-2 text-gray-700 hover:text-black"
             >
               <IoCloseCircleSharp />
             </button>
 
-           
-            <AddProduct />
+            
+            <AddProduct/>
           </div>
         </div>
       )}
