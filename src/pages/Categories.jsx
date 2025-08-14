@@ -84,12 +84,6 @@ const Categories = () => {
                     >
                       <span>{sub}</span>
                        <FaChevronRight className="text-gray-500 text-xs" />
-
-                      {activeSubTooltip === idx && (
-                        <div className="absolute top-[-60px] right-[-200px] bg-white border border-gray-300 rounded shadow-md p-2 w-48 z-30">
-                          <p className="text-sm text-gray-700">More details for "{sub}"</p>
-                        </div>
-                      )}
                     </div>
                   ))}
                 </div>

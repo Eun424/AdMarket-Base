@@ -7,7 +7,7 @@ import Navbar2 from '../components/DashboardComponent/Navbar2'
 
 const DashboardLayout = () => {
   return (
-    <div className='h-screen flex overflow-hidden'>
+    <div className='h-screen flex '>
         <Sidebar/>
 
         <div className='flex flex-col flex-1'>
