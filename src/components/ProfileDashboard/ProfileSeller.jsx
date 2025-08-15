@@ -1,4 +1,4 @@
-
+import React from 'react';
 import prof from '../../assets/images/avatar.jpg';
 
 const ProfileSeller = () => {

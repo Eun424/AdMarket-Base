@@ -19,6 +19,7 @@ import Security from "./components/ProfileDashboard/Security";
 import Preferences from "./components/ProfileDashboard/Preferences";
 import ProductDetail from "./pages/ProductDetail";
 import SubCategories from "./pages/SubCategories";
+import ProfileSeller from "./components/ProfileDashboard/ProfileSeller";
 
 
 function App() {
@@ -38,6 +39,11 @@ function App() {
         {
           path: '/product/:productId',
           element: <ProductDetail />
+        },
+
+        {
+          path: '/sellerprofile',
+          element: <ProfileSeller />
         },
 
         {
