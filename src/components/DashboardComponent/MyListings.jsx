@@ -121,22 +121,30 @@ const MyListings = () => {
         </table>
       </div>
 
-       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/40 bg-opacity-40 flex items-center justify-center">
-          <div className="relative bg-white p-4 rounded-lg shadow-xl max-h-screen overflow-auto">
-           
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-2 right-2 text-white bg-red-500 px-2 py-1 rounded-full hover:bg-red-600"
-            >
-              &times;
-            </button>
+      {showModal && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="relative bg-white p-4 rounded-lg shadow-[0_-4px_15px_rgba(0,0,0,0.1),0_4px_15px_rgba(0,0,0,0.1)] max-h-screen overflow-auto">
+      
+      {/* Close button */}
+      <button
+        onClick={() => setShowModal(false)}
+        className="absolute top-3 right-3 text-gray-700 hover:text-black text-3xl"
+      >
+        &times;
+      </button>
 
-           
-            <AddProduct />
-          </div>
-        </div>
-      )}
+      {/* Modal content */}
+      <AddProduct />
+    </div> 
+  </div>
+)}
+
+
+
+
+
+
+
       </div>
     </div>
   );
