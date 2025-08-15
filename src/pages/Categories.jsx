@@ -1,54 +1,26 @@
 import React, { useState } from 'react'
-import electronics from '../assets/images/electrical1.jpg'
-import fashion from '../assets/images/dress3.jpg'
-import beauty from '../assets/images/beauty.jpg'
-import food from '../assets/images/food.jpg'
-import services from '../assets/images/braid.jpg'
-import phones from '../assets/images/phones.jpg'
-import { FaChevronRight } from 'react-icons/fa'
 
-const categories = [
-  {
-    id: 1,
-    name: 'Home Appliances',
-    image: electronics,
-    subcategories: ['Fridges', 'Microwaves', 'Fans']
-  },
-  {
-    id: 2,
-    name: 'Fashion',
-    image: fashion,
-    subcategories: ['Men', 'Women', 'Kids']
-  },
-  {
-    id: 3,
-    name: 'Beauty and Personal Care',
-    image: beauty,
-    subcategories: ['Skin Care', 'Hair Products', 'Makeup']
-  },
-  {
-    id: 4,
-    name: 'Food and Edibles',
-    image: food,
-    subcategories: ['Snacks', 'Groceries', 'Drinks']
-  },
-  {
-    id: 5,
-    name: 'Services',
-    image: services,
-    subcategories: ['Hair Styling', 'Laundry', 'Repairs']
-  },
-  {
-    id: 6,
-    name: 'Electronics',
-    image: phones,
-    subcategories: ['Phones', 'Laptops', 'Accessories']
-  }
-]
+import { FaChevronRight } from 'react-icons/fa'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+import { setSelectedSubCategory } from '../store/features/categorySlice'
+import { filterBySubCategory } from '../store/features/productsSlice'
+
+
 
 const Categories = () => {
+  const categories = useSelector((state) => state.category.categories)
+  const dispatch = useDispatch()
+  const navigate =  useNavigate()
+ 
   const [activeTooltip, setActiveTooltip] = useState(null)
   const [activeSubTooltip, setActiveSubTooltip] = useState(null)
+
+   const handleSubCategoryClick = (subCategoryId) => {
+    dispatch(setSelectedSubCategory(subCategoryId));
+    dispatch(filterBySubCategory(subCategoryId));
+    navigate(`/products/${subCategoryId}`);
+  };
 
   return (
     <div className="px-6 md:px-12 py-6 bg-base-200">
@@ -69,7 +41,7 @@ const Categories = () => {
               alt={category.name}
               className="md:h-60 md:w-80 object-contain mb-4"
             />
-            <p
+            <div
               className="text-sm font-bold uppercase text-gray-900 text-center relative"
               onMouseEnter={() => setActiveTooltip(category.id)}
             >
@@ -81,14 +53,15 @@ const Categories = () => {
                       key={idx}
                       className="flex items-center justify-between group relative py-1 px-2 hover:bg-gray-100 cursor-pointer"
                       onMouseEnter={() => setActiveSubTooltip(idx)}
+                      onClick={() => handleSubCategoryClick(sub.id)}
                     >
-                      <span>{sub}</span>
+                      <span>{sub.name}</span>
                        <FaChevronRight className="text-gray-500 text-xs" />
                     </div>
                   ))}
                 </div>
               )}
-            </p>
+            </div>
           </div>
         ))}
       </div>

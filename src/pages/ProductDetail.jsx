@@ -1,8 +1,23 @@
 import React, { useState } from "react";
 import ceraveImg from "../assets/images/cerave-2.jpg";
 import { FaWhatsapp, FaPhone } from "react-icons/fa";
+import { useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductDetail = () => {
+  const {productId} = useParams()
+const dispatch = useDispatch()
+const products =  useSelector ((state ) => state.products.items)
+console.log(products)
+
+const product = products.find((p) => p.id === parseInt(productId))
+console.log(product)
+
+if(!product) {
+  return <div>Product not found</div>
+}
+  
+
   const [cartCount, setCartCount] = useState(0);
 
   const handleAddToCart = () => {
@@ -15,7 +30,7 @@ const ProductDetail = () => {
       <div className="bg-white shadow-lg max-w-3xl w-full overflow-hidden flex flex-col">
         <div className="bg-gray-200 flex items-center justify-center p-8">
           <img
-            src={ceraveImg}
+            src={product.image}
             alt="CeraVe Moisturizing Cream"
             className="w-72 object-contain"
           />
@@ -24,7 +39,7 @@ const ProductDetail = () => {
         <div className="p-8 space-y-6">
           <div>
             <h3 className="text-sm uppercase text-gray-500 font-medium">
-              CeraVe Skincare
+             {product.name}
             </h3>
             <h1 className="text-3xl font-bold text-gray-800">
               CeraVe Moisturizing Cream

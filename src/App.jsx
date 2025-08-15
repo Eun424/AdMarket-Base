@@ -18,6 +18,7 @@ import ProfileLayout from "./layout/ProfileLayout";
 import Security from "./components/ProfileDashboard/Security";
 import Preferences from "./components/ProfileDashboard/Preferences";
 import ProductDetail from "./pages/ProductDetail";
+import SubCategories from "./pages/SubCategories";
 
 
 function App() {
@@ -35,9 +36,14 @@ function App() {
           element: <AboutUs />
         },
         {
-            path: 'product',
-            element: <ProductDetail />
-            }
+          path: '/product/:productId',
+          element: <ProductDetail />
+        },
+
+        {
+          path: '/products/:subCategoryId',
+          element: <SubCategories />
+        }
 
       ]
     },
@@ -82,7 +88,7 @@ function App() {
           path: 'add',
           element: <AddProduct />
         },
-        
+
         {
           path: 'profile',
           element: <ProfileLayout />,
@@ -99,8 +105,8 @@ function App() {
               path: 'preferences',
               element: <Preferences />
             }
-            
-            
+
+
           ]
         },
         {
