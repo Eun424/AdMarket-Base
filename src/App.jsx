@@ -22,6 +22,7 @@ import SubCategories from "./pages/SubCategories";
 import ProfileSeller from "./components/ProfileDashboard/ProfileSeller";
 import { themeContext } from "./context/ThemeContext";
 import { useContext } from "react";
+import BuyerProfile from "./components/ProfileDashboard/BuyerProfile";
 
 
 function App() {
@@ -46,8 +47,8 @@ function App() {
         },
 
         {
-          path: '/sellerprofile',
-          element: <ProfileSeller />
+          path: '/buyer',
+          element: <BuyerProfile />
         },
 
         {

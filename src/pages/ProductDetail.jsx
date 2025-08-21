@@ -91,7 +91,7 @@ const ProductDetail = () => {
 
           {/* Buttons + WhatsApp/Phone icons */}
           <div className="flex items-center gap-4 pt-4">
-            <Link to= '/sellerprofile'
+            <Link to= '/buyer'
               
               className="px-6 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
             >
