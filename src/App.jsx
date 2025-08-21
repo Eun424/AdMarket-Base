@@ -20,6 +20,8 @@ import Preferences from "./components/ProfileDashboard/Preferences";
 import ProductDetail from "./pages/ProductDetail";
 import SubCategories from "./pages/SubCategories";
 import ProfileSeller from "./components/ProfileDashboard/ProfileSeller";
+import { themeContext } from "./context/ThemeContext";
+import { useContext } from "react";
 
 
 function App() {

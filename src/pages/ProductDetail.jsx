@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import ceraveImg from "../assets/images/cerave-2.jpg";
 import { FaWhatsapp, FaPhone } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
+import { useSelector } from "react-redux";
 
 const ProductDetail = () => {
+  const{productId} = useParams()
   const [cartCount, setCartCount] = useState(0);
+  const products =  useSelector((state ) => state.products.items)
+
+  const product = products.find((p) => p.id === parseInt(productId))
 
   const handleAddToCart = () => {
     setCartCount(cartCount + 1);
@@ -16,7 +21,7 @@ const ProductDetail = () => {
       <div className="bg-white shadow-lg max-w-3xl w-full overflow-hidden flex flex-col">
         <div className="bg-gray-200 flex items-center justify-center p-8">
           <img
-            src={ceraveImg}
+            src={product.image}
             alt="CeraVe Moisturizing Cream"
             className="w-72 object-contain"
           />
