@@ -22,7 +22,7 @@ const BuyerProfile = () => {
       <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm space-y-4">
         <h3 className="text-base font-medium text-gray-700">Personal Information</h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 text-sm text-gray-600">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 text-sm text-gray-600">
           <div>
             <p className="font-medium text-gray-500">First Name</p>
             <p>Eunice</p>
