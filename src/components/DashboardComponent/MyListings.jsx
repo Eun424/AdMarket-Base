@@ -81,48 +81,66 @@ const MyListings = () => {
       </div>
 
       {/* Table wrapper */}
-      <div className={`rounded-md border w-full ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}>
-        <div className="overflow-x-auto w-full">
-          <table className="w-full min-w-[600px] table-auto border-collapse">
-            {/* Table head */}
-            <thead className={`${theme === 'dark' ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'} text-sm text-left`}>
-              <tr>
-                <th className="p-3">Product Name</th>
-                <th className="p-3">Category</th>
-                <th className="p-3">Sub Category</th>
-                <th className="p-3">Price</th>
-                <th className="p-3">Edit</th>
-                <th className="p-3">Delete</th>
+         <div className={`rounded-md border w-full ${theme === "dark" ? "border-gray-700" : "border-gray-300"}`}>
+      <div className='overflow-x-auto w-full'>
+        <table className={`w-full min-w-[600px] table-auto border-collapse ${theme === "dark" ? "bg-gray-800 text-gray-200" : "bg-white text-gray-800"}`}>
+          <thead className={`${theme === "dark" ? "bg-gray-900 text-gray-300" : "bg-gray-100 text-gray-600" } text-sm text-left`}>
+            <tr>
+              <th className="p-3">Product Name</th>
+              <th className="p-3">Category</th>
+              <th className="p-3">Sub Category</th>
+              <th className="p-3">Price</th>
+              <th className="p-3">Edit</th>
+              <th className="p-3">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lists.map((item) => (
+              <tr
+                key={item.id}
+                className={`${theme === "dark" ? "border-gray-700 hover:bg-gray-700" : "border-t border-gray-200 hover:bg-gray-50"}`}
+              >
+                <td className="p-3 flex items-center gap-3">
+                  <img
+                    src={item.productImage}
+                    alt={item.productName}
+                    className="w-12 h-12 object-cover rounded"
+                  />
+                  <span>{item.productName}</span>
+                </td>
+                <td className="p-3">{item.category}</td>
+                <td className="p-3">{item.subCategory}</td>
+                <td className="p-3">{item.price}</td>
+                <td className="p-3">
+                  <FaEdit className="text-blue-500 cursor-pointer" />
+                </td>
+                <td className="p-3">
+                  <FaTrash className="text-red-500 cursor-pointer" />
+                </td>
               </tr>
-            </thead>
-            </table>
-
-      {showModal && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center">
-    <div className="relative bg-white p-4 rounded-lg shadow-[0_-4px_15px_rgba(0,0,0,0.1),0_4px_15px_rgba(0,0,0,0.1)] max-h-screen overflow-auto">
-      
-      {/* Close button */}
-      <button
-        onClick={() => setShowModal(false)}
-        className="absolute top-3 right-3 text-gray-700 hover:text-black text-3xl"
-      >
-        &times;
-      </button>
-
-      {/* Modal content */}
-      <AddProduct />
-    </div> 
-  </div>
-)}
-
-
-
-
-
-
-</div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
+
+
+        {/* Modal */}
+        {showModal && (
+          <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+            <div className={`${theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-white text-gray-800'} relative bg-white p-4 rounded-lg shadow-[0_-4px_15px_rgba(0,0,0,0.1),0_4px_15px_rgba(0,0,0,0.1)] max-h-screen overflow-auto`}>
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-3 right-3 text-gray-700 hover:text-black text-3xl"
+              >
+                &times;
+              </button>
+              <AddProduct />
+            </div>
+          </div>
+        )}
+</div>
+
   );
 };
 
