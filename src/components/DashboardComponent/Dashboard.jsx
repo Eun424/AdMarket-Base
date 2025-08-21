@@ -78,7 +78,7 @@ const Dashboard = () => {
 
       {/* Modal */}
       {modal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 bg-opacity-50">
           <div 
             className={`${theme === 'dark' 
               ? 'bg-gray-900 text-gray-200' 

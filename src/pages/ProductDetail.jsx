@@ -1,99 +1,70 @@
-import React, { useState } from "react";
-import ceraveImg from "../assets/images/cerave-2.jpg";
+import React, { useState, useContext } from "react";
 import { FaWhatsapp, FaPhone } from "react-icons/fa";
 import { Link, useParams } from "react-router";
 import { useSelector } from "react-redux";
+import { themeContext } from "../context/ThemeContext"; // adjust path to your context
 
 const ProductDetail = () => {
-  const{productId} = useParams()
+  const { theme } = useContext(themeContext); // get the current theme
+  const { productId } = useParams();
   const [cartCount, setCartCount] = useState(0);
-  const products =  useSelector((state ) => state.products.items)
+  const products = useSelector((state) => state.products.items);
 
-  const product = products.find((p) => p.id === parseInt(productId))
+  const product = products.find((p) => p.id === parseInt(productId));
 
   const handleAddToCart = () => {
     setCartCount(cartCount + 1);
-    alert(`CeraVe Moisturizing Cream added to cart`);
+    alert(`${product.name} added to cart`);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white shadow-lg max-w-3xl w-full overflow-hidden flex flex-col">
-        <div className="bg-gray-200 flex items-center justify-center p-8">
+    <div className={`min-h-screen flex items-center justify-center p-6 ${theme === "dark" ? "bg-gray-900" : "bg-gray-100"}`}>
+      <div className={`max-w-3xl w-full overflow-hidden flex flex-col shadow-lg ${theme === "dark" ? "bg-gray-800 text-gray-200" : "bg-white text-gray-800"}`}>
+        <div className={`flex items-center justify-center p-8 ${theme === "dark" ? "bg-gray-700" : "bg-gray-200"}`}>
           <img
             src={product.image}
-            alt="CeraVe Moisturizing Cream"
+            alt={product.name}
             className="w-72 object-contain"
           />
         </div>
 
         <div className="p-8 space-y-6">
           <div>
-            <h3 className="text-sm uppercase text-gray-500 font-medium">
-              CeraVe Skincare
+            <h3 className={`text-sm uppercase font-medium ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+              {product.brand || "CeraVe Skincare"}
             </h3>
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-3xl font-bold">
               {product.name}
             </h1>
-            <p className="mt-2 text-gray-600 text-sm">
-              A rich, non-greasy, fast-absorbing moisturizing cream with 3
-              essential ceramides and hyaluronic acid to help restore the skin’s
-              protective barrier.
+            <p className={`mt-2 text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+              {product.description || "A rich, non-greasy, fast-absorbing moisturizing cream with essential ceramides and hyaluronic acid."}
             </p>
           </div>
 
-          <div className="text-xl font-semibold text-gray-800">$17.99</div>
+          <div className={`text-xl font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
+            ${product.price || "17.99"}
+          </div>
 
-          {/* Key Features in 50/50 bullet grid including Skin Type, Concern, and Key Benefits */}
+          {/* Key Features */}
           <div>
-            <h4 className="text-sm font-medium text-gray-500 uppercase mb-2">
+            <h4 className={`text-sm font-medium uppercase mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
               Key Features
             </h4>
-            <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
-              <div className="flex items-start gap-2">
-                <span className="mt-1">•</span>
-                <p>Fragrance-free, non-comedogenic</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="mt-1">•</span>
-                <p>Suitable for dry to very dry skin</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="mt-1">•</span>
-                <p>Developed with dermatologists</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="mt-1">•</span>
-                <p>16 oz (453 g) tub</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="mt-1">•</span>
-                <p>Normal to Dry Skin</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="mt-1">•</span>
-                <p>Hydration</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="mt-1">•</span>
-                <p>Helps restore skin's natural barrier</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="mt-1">•</span>
-                <p>Provides 24-hour hydration</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="mt-1">•</span>
-                <p>Contains essential ceramides</p>
-              </div>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              {product.features?.map((feature, index) => (
+                <div key={index} className="flex items-start gap-2">
+                  <span className="mt-1">•</span>
+                  <p className={`${theme === "dark" ? "text-gray-200" : "text-gray-700"}`}>{feature}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Buttons + WhatsApp/Phone icons */}
           <div className="flex items-center gap-4 pt-4">
-            <Link to= '/buyer'
-              
-              className="px-6 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+            <Link 
+              to='/buyer'
+              className={`px-6 py-2 rounded-md transition ${theme === "dark" ? "bg-gray-600 hover:bg-gray-500 text-white" : "bg-gray-800 hover:bg-gray-700 text-white"}`}
             >
               View Seller's Profile
             </Link>
@@ -102,7 +73,11 @@ const ProductDetail = () => {
               href="https://wa.me/233XXXXXXXXX"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 border-2 border-green-700 hover:bg-green-600 transition"
+              className="flex items-center justify-center w-10 h-10 rounded-full border-2 hover:opacity-90 transition"
+              style={{
+                backgroundColor: "#25D366",
+                borderColor: "#128C7E",
+              }}
               title="Chat on WhatsApp"
             >
               <FaWhatsapp size={20} className="text-white" />
@@ -110,7 +85,11 @@ const ProductDetail = () => {
 
             <a
               href="tel:+233XXXXXXXXX"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-400 border-2 border-blue-600 hover:bg-blue-500 transition"
+              className="flex items-center justify-center w-10 h-10 rounded-full border-2 hover:opacity-90 transition"
+              style={{
+                backgroundColor: "#3b82f6",
+                borderColor: "#1e40af",
+              }}
               title="Call Seller"
             >
               <FaPhone size={20} className="text-white" />
