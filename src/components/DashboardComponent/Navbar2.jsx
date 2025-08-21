@@ -1,34 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import avatar from '../../assets/images/avatar.jpg';
 import { IoIosSearch } from 'react-icons/io';
 import { Link } from 'react-router';
+import { themeContext } from '../../context/ThemeContext';
 
 const Navbar2 = () => {
   const [open, setOpen] = useState(false);
+  const { theme } = useContext(themeContext);
 
   const toggleDropdown = () => setOpen(!open);
 
   return (
-    <div className="w-full shadow bg-white px-4 md:px-6 py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative">
+    <div
+      className={`w-full shadow px-4 md:px-6 py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative rounded-lg
+        ${theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-white text-gray-800'}
+      `}
+    >
+      {/* Title */}
+      <div className="text-xl font-bold ml-12 md:ml-0">Dashboard</div>
 
-      <div className="text-xl font-bold text-gray-800 ml-12 md:ml-0">
-        Dashboard
-      </div>
-
-      <div className='flex md:flex-row gap-2 md:gap-4 w-full md:w-auto'>
-
-        <div className="flex items-center gap-2 bg-white px-4 md:py-2 rounded-md shadow-sm border border-r-0 border-gray-300 focus-within:ring-2 focus-within:ring-blue-400 w-full md:w-auto">
+      {/* Search + Avatar */}
+      <div className="flex md:flex-row gap-2 md:gap-4 w-full md:w-auto">
+        {/* Search bar */}
+        <div
+          className={`flex items-center gap-2 px-4 md:py-0.5 rounded-md shadow-sm border border-r-0 w-full md:w-auto
+            ${theme === 'dark' 
+              ? 'bg-gray-800 border-gray-700 focus-within:ring-cyan-500' 
+              : 'bg-white border-gray-300 focus-within:ring-black'}
+          `}
+        >
           <IoIosSearch className="text-[#8B8B8C] text-xl" />
           <input
             type="search"
             placeholder="Search listings"
-            className="bg-transparent outline-none text-gray-700 placeholder:text-gray-400 w-full"
+            className={`bg-transparent outline-none w-full placeholder:text-gray-400
+              ${theme === 'dark' ? 'text-gray-200 placeholder:text-gray-500' : 'text-gray-700'}
+            `}
           />
         </div>
 
+        {/* Avatar */}
         <div className="relative">
           <div
-            className="flex flex-col md:flex-row items-center gap-2 cursor-pointer md:bg-blue-100  px-3 py-2 rounded-full md:rounded-lg"
+            className={`flex flex-col md:flex-row items-center gap-2 cursor-pointer px-3 py-1 rounded-full md:rounded-lg
+              ${theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700' : 'md:bg-blue-100'}
+            `}
             onClick={toggleDropdown}
           >
             <img
@@ -36,20 +52,45 @@ const Navbar2 = () => {
               alt="User Avatar"
               className="w-16 h-12 md:w-9 md:h-9 object-cover rounded-full"
             />
-            <p className="font-medium hidden md:block  text-gray-800 whitespace-nowrap ">Eunice Asamoah</p>
+            <p
+              className={`font-medium hidden md:block whitespace-nowrap
+                ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}
+              `}
+            >
+              Eunice Asamoah
+            </p>
           </div>
         </div>
       </div>
 
+      {/* Dropdown */}
       {open && (
-        <ul className="absolute right-4 top-[130px] md:top-[70px] w-48 bg-white rounded shadow-lg z-50">
-          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <ul
+          className={`absolute right-4 top-[130px] md:top-[70px] w-48 rounded shadow-lg z-50
+            ${theme === 'dark' ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'}
+          `}
+        >
+          <li
+            className={`px-4 py-2 cursor-pointer
+              ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}
+            `}
+          >
             My Profile
           </li>
-          <Link to= '/dashboard/profile'><li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-            Settings
-          </li></Link>
-          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500">
+          <Link to="/dashboard/profile">
+            <li
+              className={`px-4 py-2 cursor-pointer
+                ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}
+              `}
+            >
+              Settings
+            </li>
+          </Link>
+          <li
+            className={`px-4 py-2 cursor-pointer text-red-500
+              ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}
+            `}
+          >
             Logout
           </li>
         </ul>

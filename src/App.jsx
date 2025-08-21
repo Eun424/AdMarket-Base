@@ -19,9 +19,13 @@ import Security from "./components/ProfileDashboard/Security";
 import Preferences from "./components/ProfileDashboard/Preferences";
 import ProductDetail from "./pages/ProductDetail";
 import SubCategories from "./pages/SubCategories";
+import { themeContext } from "./context/ThemeContext";
+import { useContext } from "react";
 
 
 function App() {
+  const { theme } = useContext(themeContext);
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -117,7 +121,7 @@ function App() {
     }
   ]);
 
-  return <RouterProvider router={router} />;
+  return <div className={theme === "dark" ? "bg-gray-900 text-white min-h-screen" : "bg-white text-black min-h-screen"}><RouterProvider  router={router}  /></div>
 }
 
 export default App;

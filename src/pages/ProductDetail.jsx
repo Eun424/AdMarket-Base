@@ -42,7 +42,7 @@ if(!product) {
              {product.name}
             </h3>
             <h1 className="text-3xl font-bold text-gray-800">
-              CeraVe Moisturizing Cream
+              {product.name}
             </h1>
             <p className="mt-2 text-gray-600 text-sm">
               A rich, non-greasy, fast-absorbing moisturizing cream with 3
