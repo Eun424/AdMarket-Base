@@ -1,66 +1,102 @@
-import React, { useState } from 'react'
-import { FaEye } from 'react-icons/fa6'
-import { MdEditDocument } from 'react-icons/md'
-import { TiPin } from 'react-icons/ti'
-import {Link} from 'react-router'
-import AddProduct from '../DashboardComponent/AddProduct'
+import React, { useState, useContext } from 'react'
 import { IoCloseCircleSharp } from 'react-icons/io5'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import AddProduct from '../DashboardComponent/AddProduct'
+import { themeContext } from '../../context/ThemeContext'
+
+const data = [
+  { name: "Posts", count: 1 },
+  { name: "Views", count: 17 },
+  { name: "Profile Updates", count: 1 },
+];
 
 const Dashboard = () => {
   const [modal, setModal] = useState(false)
+  const { theme } = useContext(themeContext)
 
   return (
-  <div className="p-6">
-  <h2 className="text-2xl font-bold mb-4">Welcome, Eunice!</h2> 
+    <div className={`p-6 min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      <h2 className="text-2xl font-bold mb-4">Welcome, Eunice!</h2> 
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-    <div className="bg-white p-4 rounded shadow">
-      <p className="text-gray-600 text-sm">Active Listings</p>
-      <h3 className="text-xl font-semibold">8 Products</h3>
-    </div>
-    <div className="bg-white p-4 rounded shadow">
-      <p className="text-gray-600 text-sm">Pending Listings</p>
-      <h3 className="text-xl font-semibold">2 Products</h3>
-    </div>
-    <div className="bg-white p-4 rounded shadow">
-      <p className="text-gray-600 text-sm">Total Views</p>
-      <h3 className="text-xl font-semibold">143 Views</h3>
-    </div>
-  </div>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+        {[
+          { label: "Active Listings", value: "8 Products" },
+          { label: "Pending Listings", value: "2 Products" },
+          { label: "Total Views", value: "143 Views" },
+        ].map((card, idx) => (
+          <div 
+            key={idx}
+            className={`${theme === 'dark' 
+              ? 'bg-gray-800 text-gray-200' 
+              : 'bg-white text-gray-800'} p-4 rounded shadow`}
+          >
+            <p className="text-sm">{card.label}</p>
+            <h3 className="text-xl font-semibold">{card.value}</h3>
+          </div>
+        ))}
+      </div>
 
-  
-  <div className="flex gap-4 mb-6"> 
-    <button  className="bg-blue-600 text-white px-4 py-2 rounded"
-    onClick={() => setModal(true)}>+ Add New Listing</button>
-    <button className="border px-4 py-2 rounded">View My Store</button>
-  </div>
+      {/* Buttons */}
+      <div className="flex gap-4 mb-6"> 
+        <button  
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+          onClick={() => setModal(true)}
+        >
+          + Add New Listing
+        </button>
+        <button 
+          className={`${theme === 'dark' 
+            ? 'border border-gray-400 text-gray-200' 
+            : 'border text-gray-800'} px-4 py-2 rounded`}
+        >
+          View My Store
+        </button>
+      </div>
 
- 
-  <div className="bg-white p-4 rounded shadow">
-    <h3 className="text-lg font-semibold mb-3">Recent Activity</h3>
-    <ul className="text-sm space-y-2 text-gray-700">
-      <li className='flex items-center gap-1'><TiPin className='text-red-500'/> You posted 'Red Heels' - 3 hours ago</li>
-      <li className='flex items-center gap-1'><FaEye /> 'Wrist Watch' viewed 17 times today</li>
-      <li className='flex items-center gap-1'><MdEditDocument className='text-purple-300' /> Profile updated - Yesterday</li>
-    </ul>
-  </div>
-     {modal && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10">
-    <div className="relative bg-white p-4 rounded-lg shadow-[0_4px_15px_rgba(0,0,0,0.1)] max-h-screen overflow-auto w-full max-w-2xl">
-      <button
-        onClick={() => setModal(false)}
-        className="absolute top-2 right-2 text-gray-700 hover:text-black text-3xl"
+      {/* Chart */}
+      <div className={`${theme === 'dark' 
+        ? 'bg-gray-800 text-gray-200' 
+        : 'bg-white text-gray-800'} p-4 rounded shadow w-full h-64`}
       >
-        <IoCloseCircleSharp />
-      </button>
+        <h3 className="text-lg font-semibold mb-3">Recent Activity</h3>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#555' : '#ccc'} />
+            <XAxis dataKey="name" stroke={theme === 'dark' ? '#ddd' : '#333'} />
+            <YAxis allowDecimals={false} stroke={theme === 'dark' ? '#ddd' : '#333'} />
+            <Tooltip 
+              contentStyle={{
+                backgroundColor: theme === 'dark' ? '#1f2937' : '#fff',
+                color: theme === 'dark' ? '#f9fafb' : '#111'
+              }}
+            />
+            <Bar dataKey="count" fill="#6366F1" radius={[8, 8, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
 
-      <AddProduct />
+      {/* Modal */}
+      {modal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div 
+            className={`${theme === 'dark' 
+              ? 'bg-gray-900 text-gray-200' 
+              : 'bg-white text-gray-800'} relative p-4 rounded-lg shadow-xl max-h-screen overflow-auto w-full max-w-2xl`}
+          >
+            <button
+              onClick={() => setModal(false)}
+              className={`${theme === 'dark' 
+                ? 'text-gray-300 hover:text-white' 
+                : 'text-gray-700 hover:text-black'} absolute top-2 right-2`}
+            >
+              <IoCloseCircleSharp size={24} />
+            </button>
+            <AddProduct/>
+          </div>
+        </div>
+      )}
     </div>
-  </div>
-)}
-
-</div>
-
   )
 }
 
