@@ -1,31 +1,14 @@
 import React, { useState } from "react";
+import { FaCamera } from "react-icons/fa";
 
 const AddListingForm = () => {
   const categories = [
-    {
-      name: "Home Appliances",
-      subcategories: ["Fridges", "Microwaves", "Fans"],
-    },
-    {
-      name: "Fashion",
-      subcategories: ["Men", "Women", "Kids"],
-    },
-    {
-      name: "Beauty and Personal Care",
-      subcategories: ["Skin Care", "Hair Products", "Makeup"],
-    },
-    {
-      name: "Food and Edibles",
-      subcategories: ["Snacks", "Groceries", "Drinks"],
-    },
-    {
-      name: "Services",
-      subcategories: ["Hair Styling", "Laundry", "Repairs"],
-    },
-    {
-      name: "Electronics",
-      subcategories: ["Phones", "Laptops", "Accessories"],
-    },
+    { name: "Home Appliances", subcategories: ["Fridges", "Microwaves", "Fans"] },
+    { name: "Fashion", subcategories: ["Men", "Women", "Kids"] },
+    { name: "Beauty and Personal Care", subcategories: ["Skin Care", "Hair Products", "Makeup"] },
+    { name: "Food and Edibles", subcategories: ["Snacks", "Groceries", "Drinks"] },
+    { name: "Services", subcategories: ["Hair Styling", "Laundry", "Repairs"] },
+    { name: "Electronics", subcategories: ["Phones", "Laptops", "Accessories"] },
   ];
 
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -47,6 +30,7 @@ const AddListingForm = () => {
       </div>
 
       <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Product Name */}
         <div>
           <label className="block text-gray-700 mb-1">Product Name</label>
           <input
@@ -56,6 +40,17 @@ const AddListingForm = () => {
           />
         </div>
 
+        {/* Brand */}
+        <div>
+          <label className="block text-gray-700 mb-1">Brand</label>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            placeholder="Enter brand name"
+          />
+        </div>
+
+        {/* Price */}
         <div>
           <label className="block text-gray-700 mb-1">Price</label>
           <input
@@ -65,6 +60,7 @@ const AddListingForm = () => {
           />
         </div>
 
+        {/* Category */}
         <div>
           <label className="block text-gray-700 mb-1">Category</label>
           <select
@@ -81,6 +77,7 @@ const AddListingForm = () => {
           </select>
         </div>
 
+        {/* Subcategory + Upload File */}
         {selectedSubcategories.length > 0 ? (
           <>
             <div className="w-full">
@@ -97,26 +94,29 @@ const AddListingForm = () => {
               </select>
             </div>
 
-            <div className="w-full">
+            <div className="relative w-full">
               <label className="block text-gray-700 mb-1">Upload File</label>
               <input
                 type="file"
-                className="w-full border border-gray-300 rounded px-3 py-2"
+                className="w-full border border-gray-300 rounded px-3 py-2 pr-10"
               />
+              <FaCamera className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500 pointer-events-none" />
               <p className="text-sm text-gray-500 mt-1">Max 18MB</p>
             </div>
           </>
         ) : (
-          <div className="md:col-span-2">
+          <div className="relative w-full md:col-span-2">
             <label className="block text-gray-700 mb-1">Upload File</label>
             <input
               type="file"
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded px-3 py-2 pr-10"
             />
+            <FaCamera className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500 pointer-events-none" />
             <p className="text-sm text-gray-500 mt-1">Max 18MB</p>
           </div>
         )}
 
+        {/* Description */}
         <div className="md:col-span-2">
           <label className="block text-gray-700 mb-1">Description</label>
           <textarea
@@ -126,6 +126,7 @@ const AddListingForm = () => {
           ></textarea>
         </div>
 
+        {/* Submit button */}
         <div className="md:col-span-2 flex justify-center">
           <button
             type="submit"

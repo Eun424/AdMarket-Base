@@ -95,53 +95,32 @@ const MyListings = () => {
                 <th className="p-3">Delete</th>
               </tr>
             </thead>
+            </table>
 
-            {/* Table body */}
-            <tbody className={`${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
-              {lists.map((item) => (
-                <tr
-                  key={item.id}
-                  className={`${theme === 'dark' 
-                    ? 'border-t border-gray-700 hover:bg-gray-800' 
-                    : 'border-t border-gray-200 hover:bg-gray-50'}`}
-                >
-                  <td className="p-3 flex items-center gap-3">
-                    <img
-                      src={item.productImage}
-                      alt={item.productName}
-                      className="w-12 h-12 object-cover rounded"
-                    />
-                    <span>{item.productName}</span>
-                  </td>
-                  <td className="p-3">{item.category}</td>
-                  <td className="p-3">{item.subCategory}</td>
-                  <td className="p-3">{item.price}</td>
-                  <td className="p-3">
-                    <FaEdit className="text-blue-600 cursor-pointer" />
-                  </td>
-                  <td className="p-3">
-                    <FaTrash className="text-red-500 cursor-pointer" />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {showModal && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="relative bg-white p-4 rounded-lg shadow-[0_-4px_15px_rgba(0,0,0,0.1),0_4px_15px_rgba(0,0,0,0.1)] max-h-screen overflow-auto">
+      
+      {/* Close button */}
+      <button
+        onClick={() => setShowModal(false)}
+        className="absolute top-3 right-3 text-gray-700 hover:text-black text-3xl"
+      >
+        &times;
+      </button>
 
-        {/* Modal */}
-        {showModal && (
-          <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
-            <div className={`${theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-white text-gray-800'} relative p-4 rounded-lg shadow-xl max-h-screen overflow-auto`}>
-              <button
-                onClick={() => setShowModal(false)}
-                className="absolute top-2 right-2 text-white bg-red-500 px-2 py-1 rounded-full hover:bg-red-600"
-              >
-                &times;
-              </button>
-              <AddProduct />
-            </div>
-          </div>
-        )}
+      {/* Modal content */}
+      <AddProduct />
+    </div> 
+  </div>
+)}
+
+
+
+
+
+
+</div>
       </div>
     </div>
   );
