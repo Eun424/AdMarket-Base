@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import AuthStructure from './AuthStructure';
-import { authContext } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 import api from '../Axios/axios';
 import toast from 'react-hot-toast'
 import { LuDot } from 'react-icons/lu';
