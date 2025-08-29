@@ -5,7 +5,7 @@ const BuyerProfile = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4"> {/* Light gray background + top/bottom margin */}
       <div className="space-y-6 max-w-lg mx-auto">
-        <h2 className="text-2xl font-semibold text-center text-gray-800">Buyer Profile</h2>
+        <h2 className="text-2xl font-semibold text-center text-gray-800">Seller's Profile</h2>
 
         {/* Profile Header */}
         <div className="flex items-center justify-between p-6 rounded-2xl border border-gray-100 shadow-sm bg-white">
