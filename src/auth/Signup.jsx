@@ -4,6 +4,9 @@ import { authContext } from '../context/AuthContext';
 import api from '../Axios/axios';
 import toast from 'react-hot-toast'
 import { LuDot } from 'react-icons/lu';
+import { IoIosCheckmark, IoIosCheckmarkCircle, IoIosClose } from 'react-icons/io';
+import { FaCheck } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 
 
 const Signup = () => {
@@ -14,14 +17,15 @@ const Signup = () => {
     confirmPassword: ''
   })
   const [errorMessage, setErrorMessage] = useState(null)
+  const navigate = useNavigate()
 
 
-  const {password, confirmPassword} = formData
+  const { password, confirmPassword } = formData
   const passwordRules = {
     length: password.length >= 8,
     upperCase: /[A-Z]/.test(password, confirmPassword),
     lowerCase: /[a-z]/.test(password, confirmPassword),
-    specialCharacter: /[!@#$%^&*(),.?":{}|<>]/.test(password, confirmPassword)
+    specialCharacter: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password, confirmPassword)
   }
 
   const register = async (e) => {
@@ -30,10 +34,10 @@ const Signup = () => {
     try {
       const { fullName, email, password, confirmPassword } = formData
       if (!fullName || !email || !password || !confirmPassword) {
-        return (response.data.message)
+        return toast.error('All fields are required')
       }
       if (password !== confirmPassword) {
-        return (response.data.message)
+        return toast.error('Passwords do not match')
       }
 
       const response = await api.post('/register', {
@@ -48,6 +52,7 @@ const Signup = () => {
 
       if (response.data.success) {
         toast.success(response.data.message)
+        navigate('/dashboard')
       }
     } catch (error) {
       setErrorMessage(error.response.data.message) || 'Something went wrong'
@@ -63,7 +68,7 @@ const Signup = () => {
     <div>
       <AuthStructure>
         <div className="w-full md:w-1/2 p-8">
-          <h2 className="text-3xl font-semibold text-[#3690cc] mb-6 text-center">Sign Up</h2>
+          <h2 className="text-3xl font-semibold text-[#3690cc] mb-6 text-center">Register</h2>
           <div className='text-red-500 text-center'>
             {errorMessage ? errorMessage : null}
           </div>
@@ -100,20 +105,25 @@ const Signup = () => {
               />
             </div>
 
-            <div className='text-sm'>
-              <p className={`flex ${passwordRules.length ? 'text-green-600  ' : 'text-red-600 '} `}>
-                <LuDot size={25} className='text-black'/>At least 8 characters
+            {password ? (<div className='text-sm'>
+              <p className="mt-2 text-sm text-gray-600">
+                Passwords must be include at least:
               </p>
-              <p className={`flex ${passwordRules.lowerCase ? 'text-green-600 ' : 'text-red-600 '} `}>
-                <LuDot size={25} className='text-black'/>At least one lowercase letter
-              </p>
-              <p className={`flex ${passwordRules.upperCase ? 'text-green-600' : 'text-red-600 '} `}>
-               <LuDot size={25} className='text-black'/> At least one uppercase letter
-              </p>
-              <p className={`flex ${passwordRules.specialCharacter ? 'text-green-600' : 'text-red-600 '} `}>
-                <LuDot size={25} className='text-black'/>At least one special character
-              </p>
-            </div>
+              <ul className="text-sm mt-1 flex flex-wrap flex-row gap-2">
+                <li className={`flex items-center  px-3 py-1 rounded-full ${passwordRules.length ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`}>
+                  {passwordRules.length ? <IoIosCheckmark size={17} /> : <IoIosClose size={16} />}  8 characters
+                </li>
+                <li className={`flex items-center  px-3 py-1 rounded-full ${passwordRules.lowerCase ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`}>
+                  {passwordRules.lowerCase ? <IoIosCheckmark  size={17} /> : <IoIosClose size={16} />} One lowercase
+                </li>
+                <li className={`flex items-center px-3 py-1 rounded-full ${passwordRules.upperCase ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`}>
+                  {passwordRules.upperCase ? <IoIosCheckmark  size={17} /> : <IoIosClose size={16} />} One uppercase
+                </li>
+                <li className={`flex items-center px-3 py-1 rounded-full ${passwordRules.specialCharacter ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`}>
+                  {passwordRules.specialCharacter ? <IoIosCheckmark  size={17} /> : <IoIosClose size={16} />} One special character
+                </li>
+              </ul>
+            </div>) : null}
 
             <div>
               <label htmlFor="">Confirm Password</label>
@@ -125,7 +135,7 @@ const Signup = () => {
                 className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
               />
             </div>
-           
+
 
             <div className="text-sm text-gray-600">
               <label className="inline-flex items-center">
