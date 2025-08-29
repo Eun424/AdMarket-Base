@@ -2,11 +2,13 @@ import React, { useState, useContext } from 'react';
 import avatar from '../../assets/images/avatar.jpg';
 import { IoIosSearch } from 'react-icons/io';
 import { Link } from 'react-router';
+import { FaMoon, FaSun } from 'react-icons/fa'
 import { themeContext } from '../../context/ThemeContext';
 
 const Navbar2 = () => {
   const [open, setOpen] = useState(false);
-  const { theme } = useContext(themeContext);
+  const { theme, toggleTheme } = useContext(themeContext);
+
 
   const toggleDropdown = () => setOpen(!open);
 
@@ -17,15 +19,28 @@ const Navbar2 = () => {
       `}
     >
       {/* Title */}
+      <div className='flex items-center gap-4'>
+      <button
+        onClick={toggleTheme}
+        className={`p-2 rounded-full shadow hover:scale-105 transition ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+          }`}
+      >
+        {theme === 'light' ? (
+          <FaMoon className="text-gray-800" />
+        ) : (
+          <FaSun className="text-yellow-400" />
+        )}
+      </button>
       <div className="text-xl font-bold ml-12 md:ml-0">Dashboard</div>
+      </div>
 
-      {/* Search + Avatar */}
+     
       <div className="flex md:flex-row gap-2 md:gap-4 w-full md:w-auto">
         {/* Search bar */}
         <div
           className={`flex items-center gap-2 px-4 md:py-0.5 rounded-md shadow-sm border border-r-0 w-full md:w-auto
-            ${theme === 'dark' 
-              ? 'bg-gray-800 border-gray-700 focus-within:ring-cyan-500' 
+            ${theme === 'dark'
+              ? 'bg-gray-800 border-gray-700 focus-within:ring-cyan-500'
               : 'bg-white border-gray-300 focus-within:ring-black'}
           `}
         >

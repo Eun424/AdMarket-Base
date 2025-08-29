@@ -29,6 +29,9 @@ const Login = () => {
             >
               LOGIN
             </button>
+            <div>
+              <a href="">Forgot Password?</a>
+            </div>
 
             <p className="text-center text-sm ">
               Don't have an account?{' '}
