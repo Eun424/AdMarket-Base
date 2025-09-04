@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import api from "../Axios/axios";
+import toast from "react-hot-toast";
 
 
 export const AuthContext = createContext()
@@ -32,13 +33,24 @@ const login = async(email, password) => {
 }
 
 
+const handleLogout = async () => {
+    try {
+        const response = await api.post('/logout')
+    if(response.data.success) {
+        return response.data
+    }
+    } catch (error) {
+        toast.error(error.response.data.message)
+    }
+    
+}
 
 
 
 
 
     return (
-        <AuthContext.Provider value={{ user, login, loading}}>
+        <AuthContext.Provider value={{ user, login, loading, handleLogout}}>
 {children}
         </AuthContext.Provider>
     )

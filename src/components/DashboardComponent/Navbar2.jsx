@@ -4,13 +4,23 @@ import { IoIosSearch } from 'react-icons/io';
 import { Link } from 'react-router';
 import { FaMoon, FaSun } from 'react-icons/fa'
 import { themeContext } from '../../context/ThemeContext';
+import { AuthContext } from '../../context/AuthContext';
 
 const Navbar2 = () => {
   const [open, setOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false)
   const { theme, toggleTheme } = useContext(themeContext);
+  const { handleLogout } = useContext(AuthContext)
 
 
   const toggleDropdown = () => setOpen(!open);
+
+  const Logout = async () => {
+    const response = await handleLogout()
+    if (response.success) {
+      navigate('/login', { replace: true })
+    }
+  }
 
   return (
     <div
@@ -20,21 +30,21 @@ const Navbar2 = () => {
     >
       {/* Title */}
       <div className='flex items-center gap-4'>
-      <button
-        onClick={toggleTheme}
-        className={`p-2 rounded-full shadow hover:scale-105 transition ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'
-          }`}
-      >
-        {theme === 'light' ? (
-          <FaMoon className="text-gray-800" />
-        ) : (
-          <FaSun className="text-yellow-400" />
-        )}
-      </button>
-      <div className="text-xl font-bold ml-12 md:ml-0">Dashboard</div>
+        <button
+          onClick={toggleTheme}
+          className={`p-2 rounded-full shadow hover:scale-105 transition ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+            }`}
+        >
+          {theme === 'light' ? (
+            <FaMoon className="text-gray-800" />
+          ) : (
+            <FaSun className="text-yellow-400" />
+          )}
+        </button>
+        <div className="text-xl font-bold ml-12 md:ml-0">Dashboard</div>
       </div>
 
-     
+
       <div className="flex md:flex-row gap-2 md:gap-4 w-full md:w-auto">
         {/* Search bar */}
         <div
@@ -85,13 +95,6 @@ const Navbar2 = () => {
             ${theme === 'dark' ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'}
           `}
         >
-          <li
-            className={`px-4 py-2 cursor-pointer
-              ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}
-            `}
-          >
-            My Profile
-          </li>
           <Link to="/dashboard/profile">
             <li
               className={`px-4 py-2 cursor-pointer
@@ -101,7 +104,7 @@ const Navbar2 = () => {
               Settings
             </li>
           </Link>
-          <li
+          <li onClick={() => setShowModal(true)}
             className={`px-4 py-2 cursor-pointer text-red-500
               ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}
             `}
@@ -109,6 +112,33 @@ const Navbar2 = () => {
             Logout
           </li>
         </ul>
+      )}
+
+
+      {showModal && (
+        <div
+          id="logoutModal"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+        >
+          <div className="bg-white p-6 rounded shadow-lg w-96">
+            <h2 className="text-lg font-bold mb-4 text-black">Confirm Logout</h2>
+            <p className="mb-4 text-black">Are you sure you want to log out?</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={Logout}
+                className="px-4 py-2 bg-red-600 text-white rounded"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
