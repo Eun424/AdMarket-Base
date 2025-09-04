@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import AuthStructure from './AuthStructure';
-import { authContext } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 import api from '../Axios/axios';
 import toast from 'react-hot-toast'
 import { LuDot } from 'react-icons/lu';
@@ -52,7 +52,7 @@ const Signup = () => {
 
       if (response.data.success) {
         toast.success(response.data.message)
-        navigate('/dashboard')
+        navigate('/login')
       }
     } catch (error) {
       setErrorMessage(error.response.data.message) || 'Something went wrong'
@@ -107,10 +107,10 @@ const Signup = () => {
 
             {password ? (<div className='text-sm'>
               <p className="mt-2 text-sm text-gray-600">
-                Passwords must be include at least:
+                Passwords must include at least:
               </p>
               <ul className="text-sm mt-1 flex flex-wrap flex-row gap-2">
-                <li className={`flex items-center  px-3 py-1 rounded-full ${passwordRules.length ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`}>
+                <li className={`flex items-center px-3 py-1 rounded-full ${passwordRules.length ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`}>
                   {passwordRules.length ? <IoIosCheckmark size={17} /> : <IoIosClose size={16} />}  8 characters
                 </li>
                 <li className={`flex items-center  px-3 py-1 rounded-full ${passwordRules.lowerCase ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`}>

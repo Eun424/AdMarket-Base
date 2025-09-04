@@ -8,7 +8,7 @@ import Terms from "./pages/Terms";
 import SafetyTips from "./pages/SafetyTips";
 import FAQs from "./pages/FAQs";
 import DashboardLayout from "./layout/DashboardLayout";
-import Logout from "./auth/Logout";
+
 import Dashboard from "./components/DashboardComponent/Dashboard";
 import MyListings from "./components/DashboardComponent/MyListings";
 import Report from "./components/DashboardComponent/Report";
@@ -120,10 +120,6 @@ function App() {
 
           ]
         },
-        {
-          path: 'logout',
-          element: <Logout />
-        }
       ]
     }
   ]);
