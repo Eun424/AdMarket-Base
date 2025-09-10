@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import api from "../Axios/axios";
 import { useNavigate } from "react-router";
@@ -7,11 +7,13 @@ import AuthStructure from './AuthStructure'
 import { FaEye } from "react-icons/fa";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { themeContext } from "../context/ThemeContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/features/authSlice";
 import { user } from "@heroui/react";
 
 const Login = () => {
+  const { users, error } = useSelector((store) => store.auth)
+  console.log(users)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { theme } = useContext(themeContext)
@@ -27,27 +29,29 @@ const Login = () => {
     e.preventDefault();
     setErrorMessage(null);
 
-    const {email, password} = userData
+    const { email, password } = userData
     if (!userData.email || !userData.password) {
       return toast.error("Email and password are required");
     }
 
-    try {
-      dispatch(login(userData))
+    dispatch(login(userData))
 
-      if (data.message === "success") {
-        toast.success("Logged in successfully");
-        navigate("/dashboard", { replace: true });
 
-      } else {
-        toast.error("Invalid credentials");
-      }
-    } catch (error) {
-      console.log(error)
-      toast.error(error.response?.data?.message); // work on this
-      setErrorMessage(error.response?.data?.message);
-    }
   }
+  useEffect(() => {
+    if (users?.success ) {
+      toast.success(users?.message);
+      navigate("/dashboard", { replace: true });
+
+    }
+  }, [users])
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      setErrorMessage(error)
+    }
+  }, [error])
 
 
   // put this inside Login component, above return
@@ -105,7 +109,7 @@ const Login = () => {
                     : 'bg-white border border-gray-200 text-gray-800 focus:ring-blue-300'}`}
               />
 
-              
+
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
