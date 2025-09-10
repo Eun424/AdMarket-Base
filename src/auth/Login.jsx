@@ -4,44 +4,47 @@ import api from "../Axios/axios";
 import { useNavigate } from "react-router";
 import { AuthContext } from '../context/AuthContext';
 import AuthStructure from './AuthStructure'
+import { FaEye } from "react-icons/fa";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import { themeContext } from "../context/ThemeContext";
+import { useDispatch } from "react-redux";
+import { login } from "../store/features/authSlice";
+import { user } from "@heroui/react";
 
 const Login = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
-  
-
+  const { theme } = useContext(themeContext)
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false)
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState(null);
 
   async function handleLogin(e) {
     e.preventDefault();
     setErrorMessage(null);
 
+    const {email, password} = userData
     if (!userData.email || !userData.password) {
       return toast.error("Email and password are required");
     }
 
     try {
-      const res = await api.post("/login", {
-        email: userData.email,
-        password: userData.password,
-      });
+      dispatch(login(userData))
 
-      if (res.data.message === "success") {
+      if (data.message === "success") {
         toast.success("Logged in successfully");
-
-      console.log(res.data) 
-
         navigate("/dashboard", { replace: true });
+
       } else {
         toast.error("Invalid credentials");
       }
     } catch (error) {
       console.log(error)
-      toast.error(error.response?.data?.message || 'Login failed'); // work on this
+      toast.error(error.response?.data?.message); // work on this
       setErrorMessage(error.response?.data?.message);
     }
   }
@@ -52,43 +55,64 @@ const Login = () => {
 
 
 
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setUserData({
-    ...userData,
-    [name]: value,   // updates email or password based on input's name
-  })
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({
+      ...userData,
+      [name]: value,   // updates email or password based on input's name
+    })
   };
 
   return (
     <div>
       <AuthStructure>
-    <div className="w-full md:w-1/2 p-8 mt-3">
+        <div className={`w-full md:w-1/2 p-8  rounded-lg shadow-lg 
+  ${theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-white text-gray-800'}`}>
           <h2 className="text-3xl font-semibold text-[#3690cc] mb-6 text-center">Login</h2>
           <div className='text-red-500 text-center'>
             {errorMessage ? errorMessage : null}
           </div>
 
           <form className="space-y-6" onSubmit={handleLogin}>
-           
-           <label htmlFor="" className='text-sky-900'>Email</label>
+
+            <label htmlFor="" className={`block mb-1 font-medium 
+        ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Email</label>
             <input
               type="email"
               name="email"
               placeholder="Please enter your email"
-              value={userData.email}          
+              value={userData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 mt-1 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className={`w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 
+          ${theme === 'dark'
+                  ? 'bg-gray-800 border border-gray-700 text-gray-200 focus:ring-blue-400'
+                  : 'bg-white border border-gray-200 text-gray-800 focus:ring-blue-300'}`}
             />
-             <label htmlFor="" className='text-sky-900'>Password</label>
-            <input
-              type="password"
-              name="password" 
-              placeholder="Please enter your password"
-               value={userData.password}       
-              onChange={handleChange}
-              className="w-full px-4 py-3 mt-1 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
+
+
+            <label htmlFor="" className={`block mb-1 font-medium 
+        ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Password</label>
+            <div className="relative w-full max-w-sm">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Please enter your password"
+                value={userData.password}
+                onChange={handleChange}
+                className={`w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 
+          ${theme === 'dark'
+                    ? 'bg-gray-800 border border-gray-700 text-gray-200 focus:ring-blue-400'
+                    : 'bg-white border border-gray-200 text-gray-800 focus:ring-blue-300'}`}
+              />
+
+              
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="flex items-center absolute inset-y-0 right-0 px-2 text-gray-500">
+                {showPassword ? (<FiEye />) : (<FiEyeOff />)}
+              </button>
+            </div>
 
             <button
               type="submit"
@@ -96,7 +120,7 @@ const handleChange = (e) => {
             >
               LOGIN
             </button>
-            <div>
+            <div className="text-blue-800 underline -mt-3">
               <a href="">Forgot Password?</a>
             </div>
 
@@ -108,7 +132,7 @@ const handleChange = (e) => {
             </p>
           </form>
         </div>
-    </AuthStructure>
+      </AuthStructure>
     </div>
   )
 

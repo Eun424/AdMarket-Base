@@ -7,7 +7,6 @@ import { themeContext } from '../../context/ThemeContext'
 
 const Navbar = () => {
   const { theme, toggleTheme } = useContext(themeContext)
-  const [toggle, setToggle] = useState(false)
 
   return (
     <div
@@ -34,7 +33,7 @@ const Navbar = () => {
 
   {/* Seller card */}
   <div className="flex justify-center ">
-   <div className="flex flex-col items-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 py-2.5 rounded-md shadow-md">
+   <div className="flex flex-col items-center bg-gradient-to-r from-blue-400 to-indigo-400 text-white px-4 py-2.5 rounded-md shadow-md">
         <p className="text-sm font-medium text-center mb-1">
           Want to be a seller? Click below to get started!
         </p>
