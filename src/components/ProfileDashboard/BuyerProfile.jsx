@@ -1,7 +1,9 @@
 import React from 'react';
 import prof from '../../assets/images/avatar.jpg';
+import { useSelector } from 'react-redux';
 
 const BuyerProfile = () => {
+  const {users} = useSelector((store) => store.auth)
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4"> {/* Light gray background + top/bottom margin */}
       <div className="space-y-6 max-w-lg mx-auto">

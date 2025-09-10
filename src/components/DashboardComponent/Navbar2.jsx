@@ -1,26 +1,28 @@
 import React, { useState, useContext } from 'react';
 import avatar from '../../assets/images/avatar.jpg';
 import { IoIosSearch } from 'react-icons/io';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { FaMoon, FaSun } from 'react-icons/fa'
 import { themeContext } from '../../context/ThemeContext';
 import { AuthContext } from '../../context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../store/features/authSlice';
 
 const Navbar2 = () => {
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false)
   const { theme, toggleTheme } = useContext(themeContext);
-  const { handleLogout } = useContext(AuthContext)
+ const dispatch = useDispatch()
+ const navigate = useNavigate()
 
 
   const toggleDropdown = () => setOpen(!open);
 
-  const Logout = async () => {
-    const response = await handleLogout()
-    if (response.success) {
-      navigate('/login', { replace: true })
+   const handleLogout = async () => {
+      dispatch(logout())
+        navigate('/login', { replace: true }) 
     }
-  }
+
 
   return (
     <div
@@ -125,7 +127,7 @@ const Navbar2 = () => {
             <p className="mb-4 text-black">Are you sure you want to log out?</p>
             <div className="flex justify-end gap-3">
               <button
-                onClick={Logout}
+                onClick={handleLogout}
                 className="px-4 py-2 bg-red-600 text-white rounded"
               >
                 Yes

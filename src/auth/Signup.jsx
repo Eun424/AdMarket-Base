@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AuthStructure from './AuthStructure';
 import { AuthContext } from '../context/AuthContext';
 import api from '../Axios/axios';
@@ -9,11 +9,14 @@ import { FaCheck } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { themeContext } from '../context/ThemeContext';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../store/features/authSlice';
 
 
 const Signup = () => {
+  const {users, error} = useSelector((store) => store.auth)
+
+  
   const dispatch = useDispatch()
   const [errorMessage, setErrorMessage] = useState(null)
   const navigate = useNavigate()
@@ -50,23 +53,24 @@ const Signup = () => {
       return toast.error('Passwords do not match')
     }
 
-    try {
 
-      const response =  dispatch(register(formData))
-
-      if (response?.data?.success) {
-        navigate('/login', {replace:true})
-        toast.success(response?.data?.message)
-      }
-
-    } catch (error) {
-      setErrorMessage(error?.response?.data?.message) || 'Something went wrong'
-      toast.error(error?.response?.data?.message)
+     dispatch(register(formData))
+      
     }
-
-
+    
+   useEffect(() => {
+  if (users?.success) {
+    toast.success(users.message)
+    navigate('/login', { replace: true })
   }
+}, [users, navigate])
 
+useEffect(() => {
+  if (error) {
+    setErrorMessage(error)
+    toast.error(error)
+  }
+}, [error])
 
   return (
     <div>
