@@ -6,6 +6,8 @@ const initialState = ({
     users: null,
     loading: false,
     error: null,
+    profile: null,
+    success: false
    
 })
 
@@ -62,6 +64,57 @@ export const logout = createAsyncThunk('logout', async(_, thunkAPI) => {
     
 })
 
+export const sellerProfile = createAsyncThunk('profile', async(_, thunkAPI) => {
+
+    try {
+        const response = await api.get('/profile')
+        console.log(response.data.seller)
+        return response.data.seller
+
+    } catch (error) {
+        if(error?.message && error?.response?.data?.message) {
+
+            return thunkAPI.rejectWithValue(error?.response?.data?.message) 
+        }
+
+         return thunkAPI.rejectWithValue('Something went wrong') 
+    }
+})
+
+export const updateSellerProfile = createAsyncThunk('updateprofile', async(profileData, thunkAPI) => {
+
+    try {
+        const response = await api.put('/profile/edit' , profileData)
+        console.log(response.data.seller)
+        return response.data.seller
+
+    } catch (error) {
+        if(error?.message && error?.response?.data?.message) {
+
+            return thunkAPI.rejectWithValue(error?.response?.data?.message) 
+        }
+
+         return thunkAPI.rejectWithValue('Something went wrong') 
+    }
+})
+
+export const currentUser = createAsyncThunk('me', async(_, thunkAPI) => {
+
+    try {
+        const response = await api.get('/currentUser' )
+        console.log(response.data.user)
+        return response.data.user
+
+    } catch (error) {
+        if(error?.message && error?.response?.data?.message) {
+
+            return thunkAPI.rejectWithValue(null) 
+        }
+
+         return thunkAPI.rejectWithValue(null) 
+    }
+})
+
 
 
 
@@ -75,7 +128,8 @@ const authSlice = createSlice({
         })
         builder.addCase(register.fulfilled, (state, action) => {
             state.loading = false
-            state.users = action.payload
+            state.users = null
+            state.success = true
         })
         builder.addCase(register.rejected, (state, action) => {
             state.loading = false
@@ -106,6 +160,48 @@ const authSlice = createSlice({
             state.users = null
         })
         builder.addCase(logout.rejected, (state, action) => {
+            state.loading = false
+            state.users = null
+            state.error = action.payload
+        })
+
+        //sellerprofile
+        builder.addCase(sellerProfile.pending, (state, action) => {
+            state.loading = true
+        })
+        builder.addCase(sellerProfile.fulfilled, (state, action) => {
+            state.loading = false
+            state.profile = action.payload
+        })
+        builder.addCase(sellerProfile.rejected, (state, action) => {
+            state.loading = false
+            state.profile = null
+            state.error = action.payload
+        })
+
+        //update seller
+        builder.addCase(updateSellerProfile.pending, (state, action) => {
+            state.loading = true
+        })
+        builder.addCase(updateSellerProfile.fulfilled, (state, action) => {
+            state.loading = false
+            state.profile = action.payload
+        })
+        builder.addCase(updateSellerProfile.rejected, (state, action) => {
+            state.loading = false
+            state.profile = null
+            state.error = action.payload
+        })
+
+
+        builder.addCase(currentUser.pending, (state, action) => {
+            state.loading = true
+        })
+        builder.addCase(currentUser.fulfilled, (state, action) => {
+            state.loading = false
+            state.users = action.payload
+        })
+        builder.addCase(currentUser.rejected, (state, action) => {
             state.loading = false
             state.users = null
             state.error = action.payload

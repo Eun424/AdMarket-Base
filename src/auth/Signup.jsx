@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AuthStructure from './AuthStructure';
-import { AuthContext } from '../context/AuthContext';
 import api from '../Axios/axios';
 import toast from 'react-hot-toast'
 import { LuDot } from 'react-icons/lu';
@@ -14,7 +13,7 @@ import { register } from '../store/features/authSlice';
 
 
 const Signup = () => {
-  const {users, error} = useSelector((store) => store.auth)
+  const {success, users, error} = useSelector((store) => store.auth)
 
   
   const dispatch = useDispatch()
@@ -24,7 +23,8 @@ const Signup = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const { theme } = useContext(themeContext)
   const [formData, setFormData] = useState({
-    fullName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -44,8 +44,8 @@ const Signup = () => {
     setErrorMessage(null)
     e.preventDefault()
 
-    const { fullName, email, password, confirmPassword } = formData
-    if (!fullName || !email || !password || !confirmPassword) {
+    const { firstName, lastName, email, password, confirmPassword } = formData
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
       return toast.error('All fields are required')
     }
 
@@ -59,8 +59,8 @@ const Signup = () => {
     }
     
    useEffect(() => {
-  if (users?.success) {
-    toast.success(users.message)
+  if (success) {
+    toast.success(users?.message)
     navigate('/login', { replace: true })
   }
 }, [users, navigate])
@@ -86,13 +86,30 @@ useEffect(() => {
             <div>
               <label className={`block mb-1 font-medium 
         ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
-                Fullname
+                Firstname
               </label>
               <input
                 type="text"
-                value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                placeholder="John Doe"
+                value={formData.firstName}
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                placeholder="John "
+                className={`w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 
+          ${theme === 'dark'
+                    ? 'bg-gray-800 border border-gray-700 text-gray-200 focus:ring-blue-400'
+                    : 'bg-white border border-gray-200 text-gray-800 focus:ring-blue-300'}`}
+              />
+            </div>
+
+            <div>
+              <label className={`block mb-1 font-medium 
+        ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                Lastname
+              </label>
+              <input
+                type="text"
+                value={formData.lastName}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                placeholder=" Doe"
                 className={`w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 
           ${theme === 'dark'
                     ? 'bg-gray-800 border border-gray-700 text-gray-200 focus:ring-blue-400'
