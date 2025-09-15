@@ -1,8 +1,10 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { IoCloseCircleSharp } from 'react-icons/io5'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import AddProduct from '../DashboardComponent/AddProduct'
 import { themeContext } from '../../context/ThemeContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { sellerProfile } from '../../store/features/authSlice'
 
 const data = [
   { name: "Posts", count: 1 },
@@ -12,11 +14,20 @@ const data = [
 
 const Dashboard = () => {
   const [modal, setModal] = useState(false)
+  const dispatch = useDispatch();
   const { theme } = useContext(themeContext)
+  const { profile} = useSelector((store) => store.auth);
+
+
+   useEffect(() => {
+      if(!profile) {
+      dispatch(sellerProfile());
+      }
+    }, [dispatch, profile]);
 
   return (
     <div className={`p-6 min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
-      <h2 className="text-2xl font-bold mb-4">Welcome, Eunice!</h2> 
+      <h2 className="text-2xl font-bold mb-4">Welcome, {profile?.firstName}</h2> 
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">

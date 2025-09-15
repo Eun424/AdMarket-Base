@@ -1,8 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import api from "../Axios/axios";
-import { useNavigate } from "react-router";
-import { AuthContext } from '../context/AuthContext';
+import { Link, useNavigate } from "react-router";
 import AuthStructure from './AuthStructure'
 import { FaEye } from "react-icons/fa";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -125,7 +124,7 @@ const Login = () => {
               LOGIN
             </button>
             <div className="text-blue-800 underline -mt-3">
-              <a href="">Forgot Password?</a>
+              <Link to="/forgotPassword">Forgot Password?</Link>
             </div>
 
             <p className="text-center text-sm ">

@@ -21,110 +21,149 @@ import ProductDetail from "./pages/ProductDetail";
 import SubCategories from "./pages/SubCategories";
 import ProfileSeller from "./components/ProfileDashboard/ProfileSeller";
 import { themeContext } from "./context/ThemeContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import BuyerProfile from "./components/ProfileDashboard/BuyerProfile";
+import { PrivateRoute, PublicRoute } from "./helpers/routeProtect";
+import { useDispatch } from "react-redux";
+import { currentUser } from "./store/features/authSlice";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
+
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Rootlayout />,
+    children: [
+      {
+        index: true,
+        element: <LandingPage />
+      },
+      {
+        path: '/aboutus',
+        element: <AboutUs />
+      },
+      {
+        path: '/product/:productId',
+        element: <ProductDetail />
+      },
+
+      {
+        path: '/buyer',
+        element: <BuyerProfile />
+      },
+
+      {
+        path: '/products/:subCategoryId',
+        element: <SubCategories />
+      }
+
+    ]
+  },
+  {
+    path: "/login",
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    )
+  },
+  {
+    path: "/signup",
+    element: (<PublicRoute>
+      <Signup />
+    </PublicRoute>
+    )
+  },
+  {
+    path: '/forgotPassword',
+    element: (<PublicRoute>
+      <ForgotPassword />
+    </PublicRoute>
+    )
+  },
+  {
+    path: '/resetPassword/:token',
+    element: (<PublicRoute>
+      <ResetPassword />
+    </PublicRoute>
+    )
+  },
+  {
+    path: '/tips',
+    element: <SafetyTips />
+  },
+  {
+    path: '/terms',
+    element: <Terms />
+  },
+  {
+    path: '/faqs',
+    element: <FAQs />
+  },
+
+  {
+    path: '/dashboard',
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element:
+          <Dashboard />
+      },
+      {
+        path: 'listings',
+        element: <MyListings />
+      },
+      {
+        path: 'report',
+        element: <Report />
+      },
+      {
+        path: 'add',
+        element: <AddProduct />
+      },
+
+      {
+        path: 'profile',
+        element: <ProfileLayout />,
+        children: [
+          {
+            index: true,
+            element: <Profile />
+          },
+          {
+            path: 'security',
+            element: <Security />
+          },
+          {
+            path: 'preferences',
+            element: <Preferences />
+          }
+
+        ]
+      },
+    ]
+  }
+]);
 
 function App() {
   const { theme } = useContext(themeContext);
+  const dispatch = useDispatch()
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Rootlayout />,
-      children: [
-        {
-          index: true,
-          element: <LandingPage />
-        },
-        {
-          path: '/aboutus',
-          element: <AboutUs />
-        },
-        {
-          path: '/product/:productId',
-          element: <ProductDetail />
-        },
-
-        {
-          path: '/buyer',
-          element: <BuyerProfile />
-        },
-
-        {
-          path: '/products/:subCategoryId',
-          element: <SubCategories />
-        }
-
-      ]
-    },
-    {
-      path: "/login",
-      element: <Login />
-    },
-    {
-      path: "/signup",
-      element: <Signup />
-    },
-    {
-      path: '/tips',
-      element: <SafetyTips />
-    },
-    {
-      path: '/terms',
-      element: <Terms />
-    },
-    {
-      path: '/faqs',
-      element: <FAQs />
-    },
-
-    {
-      path: '/dashboard',
-      element: <DashboardLayout />,
-      children: [
-        {
-          index: true,
-          element: <Dashboard />
-        },
-        {
-          path: 'listings',
-          element: <MyListings />
-        },
-        {
-          path: 'report',
-          element: <Report />
-        },
-        {
-          path: 'add',
-          element: <AddProduct />
-        },
-
-        {
-          path: 'profile',
-          element: <ProfileLayout />,
-          children: [
-            {
-              index: true,
-              element: <Profile />
-            },
-            {
-              path: 'security',
-              element: <Security />
-            },
-            {
-              path: 'preferences',
-              element: <Preferences />
-            }
+  useEffect(() => {
+    dispatch(currentUser())
+    
+  },  [dispatch])
 
 
-          ]
-        },
-      ]
-    }
-  ]);
-
-  return <div className={theme === "dark" ? "bg-gray-900 text-white min-h-screen" : "bg-white text-black min-h-screen"}><RouterProvider  router={router}  /></div>
+  return <div className={theme === "dark" ? "bg-gray-900 text-white min-h-screen" : "bg-white text-black min-h-screen"}>
+    <RouterProvider router={router} /></div>
 }
 
 export default App;

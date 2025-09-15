@@ -9,7 +9,6 @@ import bg from '../../assets/images/bg1.jpg';
 import { IoIosLogOut } from 'react-icons/io';
 import { HiMenu } from 'react-icons/hi';
 import api from '../../Axios/axios';
-import { AuthContext } from '../../context/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/features/authSlice';
 

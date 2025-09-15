@@ -1,28 +1,33 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import avatar from '../../assets/images/avatar.jpg';
 import { IoIosSearch } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router';
 import { FaMoon, FaSun } from 'react-icons/fa'
 import { themeContext } from '../../context/ThemeContext';
-import { AuthContext } from '../../context/AuthContext';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../store/features/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, sellerProfile } from '../../store/features/authSlice';
 
 const Navbar2 = () => {
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false)
   const { theme, toggleTheme } = useContext(themeContext);
- const dispatch = useDispatch()
- const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { profile} = useSelector((store) => store.auth)
 
 
   const toggleDropdown = () => setOpen(!open);
 
-   const handleLogout = async () => {
-      dispatch(logout())
-        navigate('/login', { replace: true }) 
-    }
+  const handleLogout = async () => {
+    dispatch(logout())
+    navigate('/login', { replace: true })
+  }
 
+  useEffect(() => {
+      if(!profile) {
+      dispatch(sellerProfile());
+      }
+    }, [dispatch, profile]);
 
   return (
     <div
@@ -43,7 +48,7 @@ const Navbar2 = () => {
             <FaSun className="text-yellow-400" />
           )}
         </button>
-        <div className="text-xl font-bold ml-12 md:ml-0">Dashboard</div>
+        <Link to='/' className="text-md bg-violet-300 p-2 font-semibold ml-12 md:ml-0 rounded-md text-white">Browse Products</Link>
       </div>
 
 
@@ -79,13 +84,15 @@ const Navbar2 = () => {
               alt="User Avatar"
               className="w-16 h-12 md:w-9 md:h-9 object-cover rounded-full"
             />
-            <p
-              className={`font-medium hidden md:block whitespace-nowrap
-                ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}
-              `}
-            >
-              Eunice Asamoah
-            </p>
+            {profile && (
+              <p
+                className={`font-medium hidden md:block whitespace-nowrap
+      ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}
+    `}
+              >
+                {profile.firstName} {profile.lastName}
+              </p>
+            )}
           </div>
         </div>
       </div>
