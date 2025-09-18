@@ -60,7 +60,7 @@ const Signup = () => {
     
    useEffect(() => {
   if (success) {
-    toast.success(users?.message)
+    // toast.success(users?.message)
     navigate('/login', { replace: true })
   }
 }, [users, navigate])

@@ -158,7 +158,6 @@ function App() {
 
   useEffect(() => {
     dispatch(currentUser())
-    
   },  [dispatch])
 
 
