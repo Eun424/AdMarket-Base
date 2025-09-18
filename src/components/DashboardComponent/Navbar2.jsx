@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import avatar from '../../assets/images/avatar.jpg';
+import prof from '../../assets/images/download.jpg';
 import { IoIosSearch } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router';
 import { FaMoon, FaSun } from 'react-icons/fa'
@@ -80,7 +81,7 @@ const Navbar2 = () => {
             onClick={toggleDropdown}
           >
             <img
-              src={avatar}
+              src={profile?.profilePic || prof}
               alt="User Avatar"
               className="w-16 h-12 md:w-9 md:h-9 object-cover rounded-full"
             />

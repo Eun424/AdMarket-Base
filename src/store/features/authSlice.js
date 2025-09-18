@@ -81,6 +81,8 @@ export const sellerProfile = createAsyncThunk('profile', async(_, thunkAPI) => {
     }
 })
 
+
+
 export const updateSellerProfile = createAsyncThunk('updateprofile', async(profileData, thunkAPI) => {
 
     try {
@@ -98,6 +100,7 @@ export const updateSellerProfile = createAsyncThunk('updateprofile', async(profi
     }
 })
 
+
 export const currentUser = createAsyncThunk('me', async(_, thunkAPI) => {
 
     try {
@@ -110,7 +113,6 @@ export const currentUser = createAsyncThunk('me', async(_, thunkAPI) => {
 
             return thunkAPI.rejectWithValue(null) 
         }
-
          return thunkAPI.rejectWithValue(null) 
     }
 })
