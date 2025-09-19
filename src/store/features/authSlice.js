@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import api from "../../Axios/axios"
+import { FaDatabase } from "react-icons/fa"
 
 
 const initialState = ({
@@ -63,6 +64,57 @@ export const logout = createAsyncThunk('logout', async(_, thunkAPI) => {
         }
     
 })
+
+
+
+export const forgotPassword = createAsyncThunk('forgotPass', async (fdata, thunkAPI) => {
+    try {
+        const response = await api.post('/forgotPassword', fdata);
+        return thunkAPI.fulfillWithValue(response.data);
+
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            return thunkAPI.rejectWithValue(error.response.data.message)
+        }
+
+        return thunkAPI.rejectWithValue('something went wrong')
+    }
+})
+
+export const resetPassword = createAsyncThunk('reset', async (rData, thunkAPI) => {
+    try {
+        const response = await api.post(`/resetPassword/${rData.resetPasswordtoken}`, {password: rData.password});
+        
+        return thunkAPI.fulfillWithValue(response.data);
+
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            return thunkAPI.rejectWithValue(error.response.data.message)
+        }
+
+        return thunkAPI.rejectWithValue('something went wrong')
+    }
+})
+
+
+export const changePassword = createAsyncThunk('changePassword', async (cdata, thunkAPI) => {
+    try {
+        const response = await api.post('/changePassword', cdata);
+        return thunkAPI.fulfillWithValue(response.data);
+
+    } catch (error) {
+
+        if (error.response && error.response.data.message) {
+            return thunkAPI.rejectWithValue(error.response.data.message)
+        }
+
+        return thunkAPI.rejectWithValue('something went wrong')
+    }
+})
+
+
+
+
 
 export const sellerProfile = createAsyncThunk('profile', async(_, thunkAPI) => {
 
@@ -167,7 +219,50 @@ const authSlice = createSlice({
             state.error = action.payload
         })
 
-        //sellerprofile
+
+         //  forgotpassword 
+            .addCase(forgotPassword.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(forgotPassword.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(forgotPassword.rejected, (state, action) => {
+                state.loading = false;
+                state.message = null;
+                state.error = action.payload
+            })
+
+
+            //  resetpassword 
+            .addCase(resetPassword.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(resetPassword.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(resetPassword.rejected, (state, action) => {
+                state.loading = false;
+                state.message = null;
+                state.error = action.payload
+            })
+             // for changepassword 
+            .addCase(changePassword.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(changePassword.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(changePassword.rejected, (state, action) => {
+                state.loading = false;
+                state.message = null;
+                state.error = action.payload
+            })
+
+         //sellerprofile
         builder.addCase(sellerProfile.pending, (state, action) => {
             state.loading = true
         })
@@ -196,18 +291,18 @@ const authSlice = createSlice({
         })
 
 
-        builder.addCase(currentUser.pending, (state, action) => {
-            state.loading = true
-        })
-        builder.addCase(currentUser.fulfilled, (state, action) => {
-            state.loading = false
-            state.users = action.payload
-        })
-        builder.addCase(currentUser.rejected, (state, action) => {
-            state.loading = false
-            state.users = null
-            state.error = action.payload
-        })
+        // builder.addCase(currentUser.pending, (state, action) => {
+        //     state.loading = true
+        // })
+        // builder.addCase(currentUser.fulfilled, (state, action) => {
+        //     state.loading = false
+        //     state.users = action.payload
+        // })
+        // builder.addCase(currentUser.rejected, (state, action) => {
+        //     state.loading = false
+        //     state.users = null
+        //     state.error = action.payload
+        // })
     }
 
 })

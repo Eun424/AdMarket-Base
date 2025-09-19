@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { FaCamera } from "react-icons/fa";
 import { themeContext } from "../../context/ThemeContext";
-;
 
 const AddListingForm = () => {
   const { theme } = useContext(themeContext);
@@ -18,6 +17,8 @@ const AddListingForm = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [campus, setCampus] = useState("");
+  const [gender, setGender] = useState("");
 
   const handleCategoryChange = (e) => {
     const selected = e.target.value;
@@ -70,6 +71,39 @@ const AddListingForm = () => {
           />
         </div>
 
+        {/* Campus */}
+        <div>
+          <label className="block mb-1">Campus</label>
+          <select
+            className={`w-full rounded px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-400
+              ${theme === "dark" ? "bg-gray-800 border-gray-700 text-gray-200" : "bg-white border-gray-300 text-gray-800"}`}
+            value={campus}
+            onChange={(e) => setCampus(e.target.value)}
+          >
+            <option value="">Select Campus</option>
+            <option value="LEGON">LEGON</option>
+            <option value="UCC">UCC</option>
+            <option value="KNUST">KNUST</option>
+            <option value="UHAS">UHAS</option>
+            <option value="UEW">UEW</option>
+          </select>
+        </div>
+
+        {/* Gender */}
+        <div>
+          <label className="block mb-1">Gender</label>
+          <select
+            className={`w-full rounded px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-400
+              ${theme === "dark" ? "bg-gray-800 border-gray-700 text-gray-200" : "bg-white border-gray-300 text-gray-800"}`}
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
         {/* Category */}
         <div>
           <label className="block mb-1">Category</label>
@@ -113,7 +147,7 @@ const AddListingForm = () => {
                 className={`w-full rounded px-3 py-2 pr-10 border focus:outline-none focus:ring-2 focus:ring-blue-400
                   ${theme === "dark" ? "bg-gray-800 border-gray-700 text-gray-200 file:text-gray-300" : "bg-white border-gray-300 text-gray-800"}`}
               />
-              <FaCamera className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 pointer-events-none" />
+              <FaCamera className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500 pointer-events-none" />
               <p className="text-sm mt-1 text-gray-500">Max 18MB</p>
             </div>
           </>
@@ -125,7 +159,7 @@ const AddListingForm = () => {
               className={`w-full rounded px-3 py-2 pr-10 border focus:outline-none focus:ring-2 focus:ring-blue-400
                 ${theme === "dark" ? "bg-gray-800 border-gray-700 text-gray-200 file:text-gray-300" : "bg-white border-gray-300 text-gray-800"}`}
             />
-            <FaCamera className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 pointer-events-none" />
+            <FaCamera className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500 pointer-events-none" />
             <p className="text-sm mt-1 text-gray-500">Max 18MB</p>
           </div>
         )}
