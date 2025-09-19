@@ -31,6 +31,7 @@ import ResetPassword from "./pages/ResetPassword";
 
 
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -83,8 +84,11 @@ const router = createBrowserRouter([
     </PublicRoute>
     )
   },
+
+  
+ 
   {
-    path: '/resetPassword/:token',
+    path: '/resetPassword/:resetPasswordToken',
     element: (<PublicRoute>
       <ResetPassword />
     </PublicRoute>
