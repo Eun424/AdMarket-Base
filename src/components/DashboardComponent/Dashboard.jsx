@@ -14,7 +14,8 @@ const data = [
 
 const Dashboard = () => {
   const [modal, setModal] = useState(false)
-  const dispatch = useDispatch();
+    const dispatch = useDispatch()
+    const {products} = useSelector((store) => store.products)
   const { theme } = useContext(themeContext)
   const { profile} = useSelector((store) => store.auth);
 
@@ -32,7 +33,7 @@ const Dashboard = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
         {[
-          { label: "Active Listings", value: "8 Products" },
+          { label: "Active Listings", value: products.length },
           { label: "Pending Listings", value: "2 Products" },
           { label: "Total Views", value: "143 Views" },
         ].map((card, idx) => (
