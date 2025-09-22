@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 import beauty from '../../assets/images/cerave.jpg';
@@ -9,61 +9,27 @@ import body from '../../assets/images/body.jpg';
 import hair from '../../assets/images/hair.jpg';
 import AddProduct from '../DashboardComponent/AddProduct';
 import { themeContext } from '../../context/ThemeContext';
+import { IoCloseCircleSharp } from 'react-icons/io5';
+import api from '../../Axios/axios';
 
-const lists = [
-  {
-    id: 1,
-    productImage: beauty,
-    productName: 'Cerave Facial Moisturizer',
-    category: 'Beauty and Personal Care',
-    subCategory: 'Skincare',
-    price: 'Gh160',
-  },
-  {
-    id: 2,
-    productImage: fragrance,
-    productName: 'Touch perfume oil',
-    category: 'Beauty and Personal Care',
-    subCategory: 'Fragrances',
-    price: 'Gh15',
-  },
-  {
-    id: 3,
-    productImage: cleanser,
-    productName: 'Simple acne cleanser',
-    category: 'Beauty and Personal Care',
-    subCategory: 'Skincare',
-    price: 'Gh200',
-  },
-  {
-    id: 4,
-    productImage: oil,
-    productName: 'Bio-oil',
-    category: 'Beauty and Personal Care',
-    subCategory: 'Skincare',
-    price: 'Gh30',
-  },
-  {
-    id: 5,
-    productImage: body,
-    productName: 'Carrot shower gel',
-    category: 'Beauty and Personal Care',
-    subCategory: 'Bath and body',
-    price: 'Gh60',
-  },
-  {
-    id: 6,
-    productImage: hair,
-    productName: '12-inches wet curls',
-    category: 'Beauty and Personal Care',
-    subCategory: 'Hair Beauty',
-    price: 'Gh600',
-  },
-];
 
 const MyListings = () => {
   const [showModal, setShowModal] = useState(false);
+  const [lists, setLists] = useState([])
   const { theme } = useContext(themeContext);
+
+  useEffect(() => {
+    const fetchAllProducts = async() => {
+      try {
+        const res = await api.get('/product/allProducts')
+        console.log(res.data)
+        setLists(res.data.allProducts)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchAllProducts()
+  },[])
 
   return (
     <div className={`p-2 min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
@@ -95,22 +61,22 @@ const MyListings = () => {
             </tr>
           </thead>
           <tbody>
-            {lists.map((item) => (
+            {lists.map((list) => (
               <tr
-                key={item.id}
+                key={list._id}
                 className={`${theme === "dark" ? "border-gray-700 hover:bg-gray-700" : "border-t border-gray-200 hover:bg-gray-50"}`}
               >
                 <td className="p-3 flex items-center gap-3">
                   <img
-                    src={item.productImage}
-                    alt={item.productName}
+                    src={list.productImage}
+                    alt={list.productName}
                     className="w-12 h-12 object-cover rounded"
                   />
-                  <span>{item.productName}</span>
+                  <span>{list.productName}</span>
                 </td>
-                <td className="p-3">{item.category}</td>
-                <td className="p-3">{item.subCategory}</td>
-                <td className="p-3">{item.price}</td>
+                <td className="p-3">{list.category.name}</td>
+                <td className="p-3">{list.subCategory.name}</td>
+                <td className="p-3">{list.price}</td>
                 <td className="p-3">
                   <FaEdit className="text-blue-500 cursor-pointer" />
                 </td>
@@ -126,19 +92,25 @@ const MyListings = () => {
 
 
         {/* Modal */}
-        {showModal && (
-          <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
-            <div className={`${theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-white text-gray-800'} relative bg-white p-4 rounded-lg shadow-[0_-4px_15px_rgba(0,0,0,0.1),0_4px_15px_rgba(0,0,0,0.1)] max-h-screen overflow-auto`}>
-              <button
-                onClick={() => setShowModal(false)}
-                className="absolute top-3 right-3 text-gray-700 hover:text-black text-3xl"
-              >
-                &times;
-              </button>
-              <AddProduct />
-            </div>
-          </div>
-        )}
+         {showModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 bg-opacity-50">
+                  <div 
+                    className={`${theme === 'dark' 
+                      ? 'bg-gray-900 text-gray-200' 
+                      : 'bg-white text-gray-800'} relative p-4 rounded-lg shadow-xl max-h-screen overflow-auto w-full max-w-2xl`}
+                  >
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className={`${theme === 'dark' 
+                        ? 'text-gray-300 hover:text-white' 
+                        : 'text-gray-700 hover:text-black'} absolute top-2 right-2`}
+                    >
+                      <IoCloseCircleSharp size={24} />
+                    </button>
+                    <AddProduct/>
+                  </div>
+                </div>
+              )}
 </div>
 
   );

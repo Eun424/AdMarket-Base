@@ -16,8 +16,8 @@ const initialState = ({
 export const register = createAsyncThunk('registration', async (registerData, thunkAPI) => {
 
     try {
-        const response = await api.post('/register', registerData)
-        console.log(response.data)
+        const response = await api.post('/auth/register', registerData)
+        // console.log(response.data)
         return response.data
 
     } catch (error) {
@@ -35,7 +35,7 @@ export const register = createAsyncThunk('registration', async (registerData, th
 export const login = createAsyncThunk('login', async (loginData, thunkAPI) => {
 
     try {
-        const response = await api.post('/login', loginData)
+        const response = await api.post('/auth/login', loginData)
         console.log(response.data)
         return response.data
 
@@ -52,7 +52,7 @@ export const login = createAsyncThunk('login', async (loginData, thunkAPI) => {
 export const logout = createAsyncThunk('logout', async(_, thunkAPI) => {
 
     try {
-        const response = await api.post('/logout')
+        const response = await api.post('/auth/logout')
         return response.data
     } catch (error) {
         if(error?.message && error?.response?.data?.message) {
@@ -69,7 +69,7 @@ export const logout = createAsyncThunk('logout', async(_, thunkAPI) => {
 
 export const forgotPassword = createAsyncThunk('forgotPass', async (fdata, thunkAPI) => {
     try {
-        const response = await api.post('/forgotPassword', fdata);
+        const response = await api.post('/auth/forgotPassword', fdata);
         return thunkAPI.fulfillWithValue(response.data);
 
     } catch (error) {
@@ -83,7 +83,7 @@ export const forgotPassword = createAsyncThunk('forgotPass', async (fdata, thunk
 
 export const resetPassword = createAsyncThunk('reset', async (rData, thunkAPI) => {
     try {
-        const response = await api.post(`/resetPassword/${rData.resetPasswordtoken}`, {password: rData.password});
+        const response = await api.post(`/auth/resetPassword/${rData.resetPasswordtoken}`, {password: rData.password});
         
         return thunkAPI.fulfillWithValue(response.data);
 
@@ -99,7 +99,7 @@ export const resetPassword = createAsyncThunk('reset', async (rData, thunkAPI) =
 
 export const changePassword = createAsyncThunk('changePassword', async (cdata, thunkAPI) => {
     try {
-        const response = await api.post('/changePassword', cdata);
+        const response = await api.post('/auth/changePassword', cdata);
         return thunkAPI.fulfillWithValue(response.data);
 
     } catch (error) {
@@ -119,7 +119,7 @@ export const changePassword = createAsyncThunk('changePassword', async (cdata, t
 export const sellerProfile = createAsyncThunk('profile', async(_, thunkAPI) => {
 
     try {
-        const response = await api.get('/profile')
+        const response = await api.get('/auth/profile')
         console.log(response.data.seller)
         return response.data.seller
 
@@ -138,7 +138,7 @@ export const sellerProfile = createAsyncThunk('profile', async(_, thunkAPI) => {
 export const updateSellerProfile = createAsyncThunk('updateprofile', async(profileData, thunkAPI) => {
 
     try {
-        const response = await api.put('/profile/edit' , profileData)
+        const response = await api.put('/auth/profile/edit' , profileData)
         console.log(response.data.seller)
         return response.data.seller
 
@@ -156,7 +156,7 @@ export const updateSellerProfile = createAsyncThunk('updateprofile', async(profi
 export const currentUser = createAsyncThunk('me', async(_, thunkAPI) => {
 
     try {
-        const response = await api.get('/currentUser' )
+        const response = await api.get('/auth/currentUser' )
         console.log(response.data.user)
         return response.data.user
 
@@ -291,18 +291,18 @@ const authSlice = createSlice({
         })
 
 
-        // builder.addCase(currentUser.pending, (state, action) => {
-        //     state.loading = true
-        // })
-        // builder.addCase(currentUser.fulfilled, (state, action) => {
-        //     state.loading = false
-        //     state.users = action.payload
-        // })
-        // builder.addCase(currentUser.rejected, (state, action) => {
-        //     state.loading = false
-        //     state.users = null
-        //     state.error = action.payload
-        // })
+        builder.addCase(currentUser.pending, (state, action) => {
+            state.loading = true
+        })
+        builder.addCase(currentUser.fulfilled, (state, action) => {
+            state.loading = false
+            state.users = action.payload
+        })
+        builder.addCase(currentUser.rejected, (state, action) => {
+            state.loading = false
+            state.users = null
+            state.error = action.payload
+        })
     }
 
 })
