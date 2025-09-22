@@ -291,18 +291,18 @@ const authSlice = createSlice({
         })
 
 
-        // builder.addCase(currentUser.pending, (state, action) => {
-        //     state.loading = true
-        // })
-        // builder.addCase(currentUser.fulfilled, (state, action) => {
-        //     state.loading = false
-        //     state.users = action.payload
-        // })
-        // builder.addCase(currentUser.rejected, (state, action) => {
-        //     state.loading = false
-        //     state.users = null
-        //     state.error = action.payload
-        // })
+        builder.addCase(currentUser.pending, (state, action) => {
+            state.loading = true
+        })
+        builder.addCase(currentUser.fulfilled, (state, action) => {
+            state.loading = false
+            state.users = action.payload
+        })
+        builder.addCase(currentUser.rejected, (state, action) => {
+            state.loading = false
+            state.users = null
+            state.error = action.payload
+        })
     }
 
 })
