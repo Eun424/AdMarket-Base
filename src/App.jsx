@@ -56,7 +56,7 @@ const router = createBrowserRouter([
       },
 
       {
-        path: '/products/:subCategoryId',
+        path: '/products/:CategoryId',
         element: <SubCategories />
       }
 

@@ -19,6 +19,7 @@ const BuyerProfile = () => {
     return <p className="text-center mt-10">Loading profile...</p>;
   }
 
+  
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
       <div className="space-y-6 max-w-lg mx-auto">

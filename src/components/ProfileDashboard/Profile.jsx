@@ -66,7 +66,7 @@ setErrorMessage(null)
     formData.append('profilePic', file)
 
     try {
-      const response = await api.post('/profileUpload', formData, {
+      const response = await api.post('/auth/profileUpload', formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
@@ -124,7 +124,7 @@ setErrorMessage(null)
       >
         {
           isEditing ? (
-            <form action="/profileUpload" onSubmit={handleUpload}>
+            <form action="/auth/profileUpload" onSubmit={handleUpload}>
               <div className="relative w-full md:col-span-2">
                 <label className="block mb-1">Upload Profile Picture</label>
                 <div className='text-red-500 text-sm font-light'>{errorMessage ? errorMessage : null}</div>
