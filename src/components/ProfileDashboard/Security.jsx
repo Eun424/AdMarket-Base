@@ -35,7 +35,6 @@ const Security = () => {
   };
 
   return (
-    <AuthStructure>
       <div className="space-y-10 p-6">
         {/* Change Password Section */}
         <div className="border-b border-gray-100 pb-6">
@@ -94,7 +93,6 @@ const Security = () => {
           </form>
         </div>
       </div>
-    </AuthStructure>
   );
 };
 

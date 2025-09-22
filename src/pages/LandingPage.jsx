@@ -4,6 +4,7 @@ import Categories from "./Categories";
 
 
 const LandingPage = () => {
+
   return (
     <div>
       

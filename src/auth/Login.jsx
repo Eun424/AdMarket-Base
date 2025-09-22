@@ -45,12 +45,12 @@ const Login = () => {
     }
   }, [users])
 
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error(error);
-  //     setErrorMessage(error)
-  //   }
-  // }, [error])
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      setErrorMessage(error)
+    }
+  }, [error])
 
 
   // put this inside Login component, above return
