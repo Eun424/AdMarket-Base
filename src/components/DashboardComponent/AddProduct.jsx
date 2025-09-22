@@ -4,10 +4,13 @@ import { themeContext } from "../../context/ThemeContext";
 import api from "../../Axios/axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 const AddListingForm = () => {
   const { theme } = useContext(themeContext);
   const navigate = useNavigate()
+  const {profile} = useSelector((store) => store.auth)
+  console.log(profile)
   const [category, setCategory] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [university, setUniversity] = useState([]);
@@ -211,11 +214,12 @@ const AddListingForm = () => {
           <label className="block mb-2 font-medium">Phone Number</label>
           <input
             type="text"
-            value={formData.phone}
+            value={profile.phone || formData.phone}
+            readOnly= {profile.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
               ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
-            placeholder="Enter phone"
+            placeholder="Enter phone number"
           />
         </div>
 
@@ -223,11 +227,12 @@ const AddListingForm = () => {
           <label className="block mb-2 font-medium">WhatsApp Number</label>
           <input
             type="text"
-            value={formData.whatsapp}
+            value={profile.whatsapp || formData.whatsapp}
+            readOnly={!!profile.whatsapp}
             onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
             className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
               ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
-            placeholder="Enter WhatsApp"
+            placeholder="Enter WhatsApp number"
           />
         </div>
       </div>

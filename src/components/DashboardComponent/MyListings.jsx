@@ -1,34 +1,26 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-
-import beauty from '../../assets/images/cerave.jpg';
-import fragrance from '../../assets/images/fragrance.jpg';
-import cleanser from '../../assets/images/simple.jpg';
-import oil from '../../assets/images/Bio oli.jpg';
-import body from '../../assets/images/body.jpg';
-import hair from '../../assets/images/hair.jpg';
 import AddProduct from '../DashboardComponent/AddProduct';
 import { themeContext } from '../../context/ThemeContext';
 import { IoCloseCircleSharp } from 'react-icons/io5';
-import api from '../../Axios/axios';
+import { useDispatch, useSelector } from 'react-redux';
+import {  getProductsBySeller } from '../../store/features/productsSlice';
 
 
 const MyListings = () => {
   const [showModal, setShowModal] = useState(false);
-  const [lists, setLists] = useState([])
+  const dispatch = useDispatch()
+  const {products} = useSelector((store) => store.products)
+  console.log(products)
   const { theme } = useContext(themeContext);
 
   useEffect(() => {
-    const fetchAllProducts = async() => {
+    
       try {
-        const res = await api.get('/product/allProducts')
-        console.log(res.data)
-        setLists(res.data.allProducts)
+        dispatch(getProductsBySeller())
       } catch (error) {
         console.log(error)
       }
-    }
-    fetchAllProducts()
   },[])
 
   return (
@@ -61,22 +53,22 @@ const MyListings = () => {
             </tr>
           </thead>
           <tbody>
-            {lists.map((list) => (
+            {products.map((product) => (
               <tr
-                key={list._id}
+                key={product._id}
                 className={`${theme === "dark" ? "border-gray-700 hover:bg-gray-700" : "border-t border-gray-200 hover:bg-gray-50"}`}
               >
                 <td className="p-3 flex items-center gap-3">
                   <img
-                    src={list.productImage}
-                    alt={list.productName}
+                    src={product.productImage}
+                    alt={product.productName}
                     className="w-12 h-12 object-cover rounded"
                   />
-                  <span>{list.productName}</span>
+                  <span>{product.productName}</span>
                 </td>
-                <td className="p-3">{list.category.name}</td>
-                <td className="p-3">{list.subCategory.name}</td>
-                <td className="p-3">{list.price}</td>
+                <td className="p-3">{product.category.name}</td>
+                <td className="p-3">{product.subCategory.name}</td>
+                <td className="p-3">{product.price}</td>
                 <td className="p-3">
                   <FaEdit className="text-blue-500 cursor-pointer" />
                 </td>
