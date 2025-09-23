@@ -5,7 +5,10 @@ import api from '../../Axios/axios'
 const initialState = {
     categories: [],
     subCategories: [],
-    loading: false,
+    productBySubcategory : [],
+    loadingCategories: false,
+    loadingSubCategories: false,
+    loadingproductBySubcategory: false,
     error: null
 }
 
@@ -41,37 +44,67 @@ export const getSubCategories = createAsyncThunk('subcategories', async(category
     
 })
 
+export const getProductsBySubcategory = createAsyncThunk('subcategoryproduct', async(subCategoryId, thunkAPI) => {
+    try {
+        const res = await api.get(`/product/subcategory/${subCategoryId}`) 
+    console.log(res.data.productBySubcategory)
+    return res.data.productBySubcategory
+    } catch (error) {
+         if(error?.message && error?.response?.data?.message) {
+
+            return thunkAPI.rejectWithValue(error?.response?.data?.message) 
+        }
+
+         return thunkAPI.rejectWithValue('Something went wrong')
+    }
+    
+})
+
 
 const categorySlice = createSlice({
     name: 'category',
     initialState,
       extraReducers: (builder) => {
             builder.addCase(getCategories.pending, (state, action) => {
-                state.loading = true
+                state.loadingCategories = true
             })
             builder.addCase(getCategories.fulfilled, (state, action) => {
-                state.loading = false
+                state.loadingCategories = false
                 state.categories = action.payload
                 
             })
             builder.addCase(getCategories.rejected, (state, action) => {
-                state.loading = false
+                state.loadingCategories = false
                 state.categories = null
                 state.error = action.payload
             })
 
             //sub
             builder.addCase(getSubCategories.pending, (state, action) => {
-                state.loading = true
+                state.loadingSubCategories = true
             })
             builder.addCase(getSubCategories.fulfilled, (state, action) => {
-                state.loading = false
+                state.loadingSubCategories = false
                 state.subCategories = action.payload
                 
             })
             builder.addCase(getSubCategories.rejected, (state, action) => {
-                state.loading = false
+                state.loadingSubCategories = false
                 state.subCategories = null
+                state.error = action.payload
+            })
+
+            //get Products By Subcategory 
+            builder.addCase(getProductsBySubcategory.pending, (state, action) => {
+                state.loadingproductBySubcategory = true
+            })
+            builder.addCase(getProductsBySubcategory.fulfilled, (state, action) => {
+                state.loadingproductBySubcategory = false
+                state.productBySubcategory = action.payload   
+            })
+            builder.addCase(getProductsBySubcategory.rejected, (state, action) => {
+                state.loadingproductBySubcategory = false
+                state.productBySubcategory = null
                 state.error = action.payload
             })
         }

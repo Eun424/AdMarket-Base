@@ -14,6 +14,7 @@ const Profile = () => {
   const { theme } = useContext(themeContext);
   const dispatch = useDispatch();
   const { profile, loading } = useSelector((store) => store.auth);
+  const {products} = useSelector((store) => store.products)
   const [file, setFile] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [formData, setFormData] = useState({});

@@ -1,29 +1,31 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { FaWhatsapp, FaPhone } from "react-icons/fa";
 import { Link, useParams } from "react-router";
-import { useSelector } from "react-redux";
-import { themeContext } from "../context/ThemeContext"; // adjust path to your context
+import { useDispatch, useSelector } from "react-redux";
+import { themeContext } from "../context/ThemeContext"; 
+import { getProductById } from "../store/features/productsSlice";
 
 const ProductDetail = () => {
-  const { theme } = useContext(themeContext); // get the current theme
+  const { theme } = useContext(themeContext); 
   const { productId } = useParams();
-  const [cartCount, setCartCount] = useState(0);
-  const products = useSelector((state) => state.products.items);
+  const dispatch = useDispatch()
+  const {products} = useSelector((state) => state.products);
 
-  const product = products.find((p) => p.id === parseInt(productId));
+  
 
-  const handleAddToCart = () => {
-    setCartCount(cartCount + 1);
-    alert(`${product.name} added to cart`);
-  };
+  useEffect(() => {
+    dispatch(getProductById(productId))
+  }, [dispatch, productId])
+
+
 
   return (
     <div className={`min-h-screen flex items-center justify-center p-6 ${theme === "dark" ? "bg-gray-900" : "bg-gray-100"}`}>
       <div className={`max-w-3xl w-full overflow-hidden flex flex-col shadow-lg ${theme === "dark" ? "bg-gray-800 text-gray-200" : "bg-white text-gray-800"}`}>
         <div className={`flex items-center justify-center p-8 ${theme === "dark" ? "bg-gray-700" : "bg-gray-200"}`}>
           <img
-            src={product.image}
-            alt={product.name}
+            src={products.productImage}
+            alt={products.productName}
             className="w-72 object-contain"
           />
         </div>
@@ -31,18 +33,18 @@ const ProductDetail = () => {
         <div className="p-8 space-y-6">
           <div>
             <h3 className={`text-sm uppercase font-medium ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
-              {product.brand || "CeraVe Skincare"}
+              {products.brand}
             </h3>
             <h1 className="text-3xl font-bold">
-              {product.name}
+              {products.productName}
             </h1>
             <p className={`mt-2 text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
-              {product.description || "A rich, non-greasy, fast-absorbing moisturizing cream with essential ceramides and hyaluronic acid."}
+              {products.description || "A rich, non-greasy, fast-absorbing moisturizing cream with essential ceramides and hyaluronic acid."}
             </p>
           </div>
 
           <div className={`text-xl font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
-            ${product.price || "17.99"}
+            GHS{products.price}
           </div>
 
           {/* Key Features */}
@@ -51,7 +53,7 @@ const ProductDetail = () => {
               Key Features
             </h4>
             <div className="grid grid-cols-2 gap-2 text-sm">
-              {product.features?.map((feature, index) => (
+              {products.features?.map((feature, index) => (
                 <div key={index} className="flex items-start gap-2">
                   <span className="mt-1">•</span>
                   <p className={`${theme === "dark" ? "text-gray-200" : "text-gray-700"}`}>{feature}</p>
@@ -70,7 +72,9 @@ const ProductDetail = () => {
             </Link>
 
             <a
-              href="https://wa.me/233XXXXXXXXX"
+              href={`https://wa.me/${products.whatsapp}?text=${encodeURIComponent(
+      `Hello, I'm interested in the "${products.productName}" listed. Could you provide more details?`
+    )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-10 h-10 rounded-full border-2 hover:opacity-90 transition"
@@ -84,7 +88,7 @@ const ProductDetail = () => {
             </a>
 
             <a
-              href="tel:+233XXXXXXXXX"
+              href={`tel: ${products.phone}`}
               className="flex items-center justify-center w-10 h-10 rounded-full border-2 hover:opacity-90 transition"
               style={{
                 backgroundColor: "#3b82f6",

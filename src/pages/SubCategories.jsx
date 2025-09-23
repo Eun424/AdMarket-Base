@@ -2,49 +2,55 @@ import React, { useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { filterBySubCategory } from '../store/features/productsSlice';
-import { themeContext } from '../context/ThemeContext'; // adjust the path
+import { themeContext } from '../context/ThemeContext'; 
+import { getProductsBySubcategory } from '../store/features/categorySlice';
+import Loader from '../helpers/Loader';
 
 const SubCategories = () => {
   const { subCategoryId } = useParams();
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.products.items);
+  const {productBySubcategory, loadingSubCategories, error} = useSelector((state) => state.category);
   const navigate = useNavigate();
   const { theme } = useContext(themeContext); // get current theme
 
   useEffect(() => {
-    if (subCategoryId) {
-      dispatch(filterBySubCategory(subCategoryId));
-    }
+    dispatch(getProductsBySubcategory(subCategoryId))
   }, [subCategoryId, dispatch]);
 
   const handleProductClick = (productId) => {
-    navigate(`/product/${productId}`);
+    navigate(`/product/productById/${productId}`);
   };
+
+  if(loadingSubCategories) return <Loader message='Fetching sub categories.....'/>
+  if(error) return <div>{error}</div>
 
   return (
     <div className={`${theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-gray-100 text-gray-800'} min-h-screen p-6`}>
       <h1 className={`text-xl font-bold mb-4 uppercase ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
-        {subCategoryId}
+        
       </h1>
 
-      {products.length > 0 ? (
+      {productBySubcategory.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {products.map((product) => (
+          {productBySubcategory.map((product) => (
             <div
-              key={product.id}
+              key={product._id}
               className={`border rounded-lg p-4 shadow-sm transition cursor-pointer
                 ${theme === 'dark' 
                   ? 'border-gray-700 bg-gray-800 hover:shadow-md hover:bg-gray-700' 
                   : 'border-gray-300 bg-white hover:shadow-md hover:bg-gray-50'}`}
-              onClick={() => handleProductClick(product.id)}
+              onClick={() => handleProductClick(product._id)}
             >
               <img
-                src={product.image}
-                alt={product.name}
+                src={product.productImage}
+                alt={product.productName}
                 className="w-full md:h-70 h-40 object-cover mb-2 rounded"
               />
               <h3 className={`font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
-                {product.name}
+                {product.productName}
+              </h3>
+              <h3 className={`font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
+                {product.price}GHS
               </h3>
             </div>
           ))}
