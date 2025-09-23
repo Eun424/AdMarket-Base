@@ -46,7 +46,7 @@ const router = createBrowserRouter([
         element: <AboutUs />
       },
       {
-        path: '/product/:productId',
+        path: '/product/productById/:productId',
         element: <ProductDetail />
       },
 
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
       },
 
       {
-        path: '/products/:CategoryId',
+        path: '/product/subcategory/:subCategoryId',
         element: <SubCategories />
       }
 

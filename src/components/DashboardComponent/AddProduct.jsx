@@ -215,7 +215,7 @@ const AddListingForm = () => {
           <input
             type="text"
             value={profile.phone || formData.phone}
-            readOnly= {profile.phone}
+            // readOnly= {profile.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
               ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
@@ -228,7 +228,7 @@ const AddListingForm = () => {
           <input
             type="text"
             value={profile.whatsapp || formData.whatsapp}
-            readOnly={!!profile.whatsapp}
+            // readOnly={!!profile.whatsapp}
             onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
             className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
               ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}

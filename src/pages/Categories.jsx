@@ -5,9 +5,10 @@ import { useNavigate, useParams } from 'react-router'
 import { getCategories, getSubCategories } from '../store/features/categorySlice'
 import { filterBySubCategory } from '../store/features/productsSlice'
 import { themeContext } from '../context/ThemeContext'
+import Loader from '../helpers/Loader'
 
 const Categories = () => {
-  const { categories, subcategories } = useSelector((state) => state.category)
+  const { categories, subCategories, loadingCategories, error } = useSelector((state) => state.category)
   const dispatch = useDispatch()
   // const {categoryId} = useParams()
   const navigate = useNavigate()
@@ -19,13 +20,13 @@ const Categories = () => {
     dispatch(getCategories())
   }, [])
 
+  if(loadingCategories) return <Loader message='Fetching categories.....'/>
+  if(error) return <div>{error}</div>
 
 
-  // const handleSubCategoryClick = (subCategoryId) => {
-  //   dispatch(setSelectedSubCategory(subCategoryId))
-  //   dispatch(filterBySubCategory(subCategoryId))
-  //   navigate(`/products/${subCategoryId}`)
-  // }
+  const handleSubCategoryClick = (subCategoryId) => {
+    navigate(`/product/subcategory/${subCategoryId}`)
+  }
 
   return (
     <div
@@ -73,8 +74,8 @@ const Categories = () => {
         : 'bg-white border-gray-300 text-gray-800'
     }`}
   >
-    {Array.isArray(subcategories) && subcategories.some(sub => sub.category === category._id) ? (
-      subcategories
+    {Array.isArray(subCategories) && subCategories.some(sub => sub.category === category._id) ? (
+      subCategories
         .filter(sub => sub.category === category._id)
         .map((sub) => (
           <div

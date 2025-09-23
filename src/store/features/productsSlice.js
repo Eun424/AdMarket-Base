@@ -23,6 +23,27 @@ export const getProductsBySeller = createAsyncThunk('all', async(_, thunkAPI) =>
     
 })
 
+export const getProductById = createAsyncThunk('singleProduct', async(productId, thunkAPI) => {
+    try {
+        const res = await api.get(`/product/productById/${productId}`) 
+    console.log(res.data.productById)
+    return res.data.productById
+    } catch (error) {
+         if(error?.message && error?.response?.data?.message) {
+
+            return thunkAPI.rejectWithValue(error?.response?.data?.message) 
+        }
+
+         return thunkAPI.rejectWithValue('Something went wrong')
+    }
+    
+})
+
+
+
+
+
+
 export const productsSlice = createSlice({
     name: 'products',
     initialState,
@@ -46,8 +67,25 @@ export const productsSlice = createSlice({
                 state.error = action.payload
             })
 
+            ///single product
+            builder.addCase(getProductById.pending, (state, action) => {
+                state.loading = true
+            })
+            builder.addCase(getProductById.fulfilled, (state, action) => {
+                state.loading = false
+                state.products = action.payload
+                
+            })
+            builder.addCase(getProductById.rejected, (state, action) => {
+                state.loading = false
+                state.products = null
+                state.error = action.payload
+            })
+
             
         }
+
+
 })
 
 export const { filterBySubCategory } = productsSlice.actions;
