@@ -47,7 +47,7 @@ const Profile = () => {
   data.append("phone", formData.phone);
   data.append("whatsapp", formData.whatsapp);
   data.append("university", formData.university);
-  // ...add other fields
+  
 
   if (file) {
     data.append("profilePic", file); // only upload on Save

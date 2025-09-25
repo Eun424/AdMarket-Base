@@ -117,7 +117,7 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
     fetchSub();
   }, [formData.category]);
 
-  // Fetch universities
+  // universities
   useEffect(() => {
     const fetchUniversities = async () => {
       try {
@@ -130,7 +130,7 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
     fetchUniversities();
   }, []);
 
-  // Fetch genders
+  //  genders
   useEffect(() => {
     const fetchGenders = async () => {
       try {
@@ -158,11 +158,12 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
       else if (key !== "productImage") data.append(key, value);
     });
 
-    if (formData.productImage) {
-      Array.from(formData.productImage).forEach((file) => {
-        data.append("productImage", file);
-      });
-    }
+   
+if (formData.productImage) {
+    Array.from(formData.productImage).forEach((file) => {
+      data.append("productImage", file);
+    });
+  }
 
     try {
       if (editProduct) {
@@ -223,18 +224,20 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
               />
             </div>
 
-            <div>
-              <label className="block mb-2 font-medium">Price (GHS) *</label>
-              <input
-                type="number"
-                value={formData.price}
-                onChange={(e) =>
-                  setFormData({ ...formData, price: e.target.value })
-                }
-                required
-                className="w-full rounded-lg px-4 py-2 border focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+        {/* Price */}
+        <div>
+          <label className="block mb-2 font-medium">Price (GHS) <span className="text-red-500">*</span></label>
+          <input
+            type="number"
+            value={formData.price}
+            step="0.01" 
+            required
+            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
+              ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
+            placeholder="Enter price"
+          />
+        </div>
 
             <div>
               <label className="block mb-2 font-medium">Brand (optional)</label>

@@ -5,6 +5,8 @@ import { filterBySubCategory } from '../store/features/productsSlice';
 import { themeContext } from '../context/ThemeContext'; 
 import { getProductsBySubcategory } from '../store/features/categorySlice';
 import Loader from '../helpers/Loader';
+import { MdArrowBack } from 'react-icons/md';
+import { IoArrowBack } from 'react-icons/io5';
 
 const SubCategories = () => {
   const { subCategoryId } = useParams();
@@ -26,9 +28,13 @@ const SubCategories = () => {
 
   return (
     <div className={`${theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-gray-100 text-gray-800'} min-h-screen p-6`}>
-      <h1 className={`text-xl font-bold mb-4 uppercase ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
-        
-      </h1>
+<button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 mb-6 text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400"
+        >
+          <IoArrowBack size={20} />
+          Back
+        </button>
 
       {productBySubcategory.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -50,7 +56,8 @@ const SubCategories = () => {
                 {product.productName}
               </p>
               <h3 className={`font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
-                GH₵ {product.price}
+                {new Intl.NumberFormat('en-GH', { style: 'currency', currency: 'GHS' }).format(product.price)}
+
               </h3>
             </div>
           ))}
