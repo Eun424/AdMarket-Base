@@ -15,6 +15,8 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
   const [subCategories, setSubCategories] = useState([]);
   const [university, setUniversity] = useState([]);
   const [genders, setGenders] = useState([]);
+  const[errorMessage, setErrorMessage] = useState(null)
+  const [error, setError] = useState(null)
 
   const [formData, setFormData] = useState({
     productName: editProduct?.productName || "",
@@ -53,6 +55,8 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
       setSubCategories(res.data.subcategories);
     } catch (error) {
       console.error("Error fetching subcategories", error);
+      setErrorMessage(error?.response?.data?.message)
+      toast.error(error?.response?.data?.message)
     }
   };
 
@@ -91,19 +95,40 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
   data.append("description", formData.description);
   data.append("brand", formData.brand);
   data.append("price", formData.price);
-  data.append("campus", formData.campus);
   data.append("whatsapp", formData.whatsapp);
   data.append("phone", formData.phone);
   data.append("gender", formData.gender?._id || formData.gender);
   data.append("category", formData.category?._id || formData.category);
   data.append("subCategory", formData.subCategory?._id || formData.subCategory);
-  data.append("university", formData.campus);
+  data.append("university", formData.university);
+
+  if (! formData.productName) {
+     return toast.error('Product name is required')
+       }
+    if (!formData.price) {
+      return toast.error('Price is required')
+    }
+ 
+    if (!formData.category) {
+       return toast.error('Please select a category')
+    }
+    if (!formData.subCategory) {
+        return toast.error('Please select a sub-category')
+    }
+
+
+    if (!formData.productImage || formData.productImage.length === 0) {
+       return toast.error("At least one product image is required");
+    }
+
+
 
   if (formData.productImage) {
     Array.from(formData.productImage).forEach((file) => {
       data.append("productImage", file);
     });
   }
+
 
   try {
     let res;
@@ -115,24 +140,32 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
       if (res?.data?.success) {
         toast.success("Product updated successfully");
       }
+
     } else {
       //  ADD 
       res = await api.post("/product/addProduct", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      if (res?.data?.success) {
-        toast.success("Product added successfully");
+      if(res?.data?.success) {
+        toast.success('Product added successfully')
+        navigate('/dashboard/listings')
       }
+      console.log(res.data)
+      return res.data;
+      }
+
+    } catch (error) {
+      console.error("Error adding product", error);
+      const message =
+    error?.response?.data?.message ||
+    error?.message ||
+    "Something went wrong. Please try again.";
+      setError(message)
+       setErrorMessage(message)
+      toast.error(message)
     }
-
-    setShowModal(false);
-    navigate("/dashboard/listings");
-  } catch (error) {
-    console.error("Error saving product", error);
-    toast.error("Something went wrong!");
-  }
+;
 };
-
 
   return (
     <div
@@ -143,48 +176,38 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
         {editProduct ? "Edit Product" : "Add New Product"}
       </h2>
 
-      <form className="space-y-8" onSubmit={handleSubmit}>
-        {/* Product Info */}
+  <form className="space-y-8" onSubmit={handleSubmit}>
+    {/* Product Info */}
+    <div>
+      <h3 className="text-lg font-semibold mb-4 border-b pb-2">Product Info</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Product Name */}
         <div>
-          <h3 className="text-lg font-semibold mb-4 border-b pb-2">Product Info</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Product Name */}
-            <div>
-              <label className="block mb-2 font-medium">Product Name</label>
-              <input
-                value={formData.productName}
-                onChange={(e) =>
-                  setFormData({ ...formData, productName: e.target.value })
-                }
-                type="text"
-                className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
-                  ${
-                    theme === "dark"
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-300"
-                  }`}
-                placeholder="e.g. Sneakers"
-              />
-            </div>
+          <label className="block mb-2 font-medium">Product Name <span className="text-red-500">*</span></label>
+          <input
+            value={formData.productName}
+            onChange={(e) => setFormData({ ...formData, productName: e.target.value })}
+            type="text"
+            required
+            className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
+              ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
+            placeholder="e.g. Sneakers"
+          />
+        </div>
 
-            {/* Price */}
-            <div>
-              <label className="block mb-2 font-medium">Price (GHS)</label>
-              <input
-                type="number"
-                value={formData.price}
-                onChange={(e) =>
-                  setFormData({ ...formData, price: e.target.value })
-                }
-                className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
-                  ${
-                    theme === "dark"
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-300"
-                  }`}
-                placeholder="Enter price"
-              />
-            </div>
+        {/* Price */}
+        <div>
+          <label className="block mb-2 font-medium">Price (GHS) <span className="text-red-500">*</span></label>
+          <input
+            type="number"
+            value={formData.price}
+            required
+            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
+              ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
+            placeholder="Enter price"
+          />
+        </div>
 
             {/* Brand */}
             <div>
@@ -231,114 +254,108 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
           </div>
         </div>
 
-        {/*Campus & Contact */}
+    {/* Campus & Contact Info */}
+    <div>
+      <h3 className="text-lg font-semibold mb-4 border-b pb-2">Campus & Contact </h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <h3 className="text-lg font-semibold mb-4 border-b pb-2">Campus & Contact</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block mb-2 font-medium">Campus</label>
-              <select
-                value={formData.campus}
-                onChange={(e) =>
-                  setFormData({ ...formData, campus: e.target.value })
-                }
-                className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
-                  ${
-                    theme === "dark"
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-300"
-                  }`}
-              >
-                <option value="">Select Campus</option>
-                {university.map((uni) => (
-                  <option key={uni._id} value={uni._id}>
-                    {uni.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block mb-2 font-medium">Phone Number</label>
-              <input
-                type="text"
-                value={profile.phone || formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
-                className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
-                  ${
-                    theme === "dark"
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-300"
-                  }`}
-                placeholder="Enter phone number"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-2 font-medium">WhatsApp Number</label>
-              <input
-                type="text"
-                value={profile.whatsapp || formData.whatsapp}
-                onChange={(e) =>
-                  setFormData({ ...formData, whatsapp: e.target.value })
-                }
-                className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
-                  ${
-                    theme === "dark"
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-300"
-                  }`}
-                placeholder="Enter WhatsApp number"
-              />
-            </div>
-          </div>
+          <label className="block mb-2 font-medium">
+            Campus <span className="text-red-500">*</span>
+            </label>
+          <select
+            value={formData.university}
+            required
+            onChange={(e) => setFormData({ ...formData, university: e.target.value })}
+            className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
+              ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
+          >
+            <option value="">Select Campus</option>
+            {university.map((uni) => (
+              <option key={uni._id} value={uni._id}>
+                {uni.name}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* Category & Subcategory */}
         <div>
-          <h3 className="text-lg font-semibold mb-4 border-b pb-2">Category</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block mb-2 font-medium">Category</label>
-              <select
-                value={formData.category}
-                onChange={handleCategoryChange}
-                className="w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              >
-                <option value="">Select Category</option>
-                {category.map((cat) => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {subCategories.length > 0 && (
-              <div>
-                <label className="block mb-2 font-medium">Subcategory</label>
-                <select
-                  value={formData.subCategory}
-                  onChange={(e) =>
-                    setFormData({ ...formData, subCategory: e.target.value })
-                  }
-                  className="w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select SubCategory</option>
-                  {subCategories.map((sub) => (
-                    <option key={sub._id} value={sub._id}>
-                      {sub.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-          </div>
+          <label className="block mb-2 font-medium">
+            Phone Number <span className="text-red-500">*</span>
+            </label>
+          <input
+            type="text"
+            value={profile.phone || formData.phone}
+            readOnly= {profile.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
+              ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
+            placeholder="Enter phone number"
+          />
         </div>
+
+        <div>
+          <label className="block mb-2 font-medium">
+            WhatsApp Number <span className="text-red-500">*</span>
+            </label>
+          <input
+            type="text"
+            value={profile.whatsapp || formData.whatsapp}
+            readOnly={!!profile.whatsapp}
+            required
+            onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+            className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
+              ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
+            placeholder="Enter WhatsApp number"
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* Category & Subcategory */}
+    <div>
+      <h3 className="text-lg font-semibold mb-4 border-b pb-2">Category</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block mb-2 font-medium">
+            Category <span className="text-red-500">*</span>
+            </label>
+          <select
+            value={formData.category}
+            onChange={handleCategoryChange}
+            className="w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
+            <option value="">Select Category</option>
+            {category.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {subCategories.length > 0 && (
+          <div>
+            <label className="block mb-2 font-medium">
+  Subcategory <span className="text-red-500">*</span>
+</label>
+            <select
+              value={formData.subCategory}
+              onChange={(e) => setFormData({ ...formData, subCategory: e.target.value })}
+              className="w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="">Select SubCategory</option>
+              {subCategories.map((sub) => (
+                <option key={sub._id} value={sub._id}>
+                  {sub.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+    </div>
 
         {/*Description */}
         <div>
@@ -361,7 +378,9 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
 
         {/*Upload Images */}
         <div>
-          <h3 className="text-lg font-semibold mb-4 border-b pb-2">Upload Images</h3>
+          <h3 className="text-lg font-semibold mb-4 border-b pb-2">
+        Upload Images <span className="text-red-500">*</span>
+      </h3>
 
           {/*Show current images only when editing */}
           {editProduct?.productImage && (
@@ -388,6 +407,7 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
               type="file"
               accept="image/*"
               multiple
+          required
               onChange={(e) =>
                 setFormData({ ...formData, productImage: e.target.files })
               }
@@ -417,6 +437,7 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
       </form>
     </div>
   );
-};
+
+}
 
 export default AddListingForm;

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import api from '../../Axios/axios'
+import toast from 'react-hot-toast'
 
 
 const initialState = {
@@ -20,7 +21,7 @@ export const getCategories = createAsyncThunk('categories', async(_, thunkAPI) =
     } catch (error) {
          if(error?.message && error?.response?.data?.message) {
 
-            return thunkAPI.rejectWithValue(error?.response?.data?.message) 
+            return thunkAPI.rejectWithValue('Network error. Please check your internet connection') 
         }
 
          return thunkAPI.rejectWithValue('Something went wrong')
@@ -77,6 +78,7 @@ const categorySlice = createSlice({
                 state.loadingCategories = false
                 state.categories = null
                 state.error = action.payload
+                  toast.error(action.payload || "Failed to load categories");
             })
 
             //sub

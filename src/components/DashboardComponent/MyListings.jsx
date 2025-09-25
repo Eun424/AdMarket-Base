@@ -5,9 +5,13 @@ import { themeContext } from '../../context/ThemeContext';
 import { IoCloseCircleSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsBySeller } from '../../store/features/productsSlice';
+import api from '../../Axios/axios';
+import toast from 'react-hot-toast';
 
 const MyListings = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deleteId, setDeleteId] = useState(null)
   const [editProduct, setEditProduct] = useState(null);
   const dispatch = useDispatch();
   const { products } = useSelector((store) => store.products);
@@ -19,7 +23,25 @@ const MyListings = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [dispatch]);
+}, [])
+
+
+  const handleDelete = async(productId) => {
+    try {
+      const res = await api.delete(`/product/delete/${productId}`)
+    console.log(res.data)
+
+    if(res?.data?.success) {
+        toast.success(res?.data?.message)
+        setShowDeleteModal(false)
+        dispatch(getProductsBySeller())
+     }
+
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }
 
   return (
     <div className={`p-2 min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
@@ -62,14 +84,14 @@ const MyListings = () => {
                   >
                     <td className="p-3 flex items-center gap-3">
                       <img
-                        src={product.productImage}
+                        src={product.productImage[0]}
                         alt={product.productName}
                         className="w-12 h-12 object-cover rounded"
                       />
                       <span>{product.productName}</span>
                     </td>
-                    <td className="p-3">{product.category?.name}</td>
-                    <td className="p-3">{product.subCategory?.name}</td>
+                    <td className="p-3">{product?.category?.name}</td>
+                    <td className="p-3">{product?.subCategory?.name}</td>
                     <td className="p-3">{product.price}</td>
                     <td className="p-3">
                       <FaEdit
@@ -80,8 +102,11 @@ const MyListings = () => {
                         }}
                       />
                     </td>
-                    <td className="p-3">
-                      <FaTrash className="text-red-500 cursor-pointer" />
+                    <td className="p-3" >
+                      <FaTrash onClick={() => {
+                        setDeleteId(product._id)
+                        setShowDeleteModal(true)}}
+                         className="text-red-500 cursor-pointer" />
                     </td>
                   </tr>
                 ))
@@ -94,6 +119,32 @@ const MyListings = () => {
               )}
             </tbody>
           </table>
+
+          {showDeleteModal && (
+        <div
+          id="deleteModal"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+        >
+          <div className="bg-white p-6 rounded shadow-lg w-96">
+            <h2 className="text-lg font-bold mb-4 text-black">Confirm Delete</h2>
+            <p className="mb-4 text-black">Are you sure you want to delete this item?</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => handleDelete(deleteId)}
+                className="px-4 py-2 bg-red-600 text-white rounded"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
         </div>
       </div>
 

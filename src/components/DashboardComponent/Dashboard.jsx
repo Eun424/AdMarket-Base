@@ -5,6 +5,7 @@ import AddProduct from '../DashboardComponent/AddProduct'
 import { themeContext } from '../../context/ThemeContext'
 import { useDispatch, useSelector } from 'react-redux'
 import { sellerProfile } from '../../store/features/authSlice'
+import { getProductsBySeller } from '../../store/features/productsSlice'
 
 const data = [
   { name: "Posts", count: 1 },
@@ -24,6 +25,7 @@ const Dashboard = () => {
       if(!profile) {
       dispatch(sellerProfile());
       }
+      dispatch(getProductsBySeller()); 
     }, [dispatch, profile]);
 
   return (
@@ -33,7 +35,7 @@ const Dashboard = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
         {[
-          { label: "Active Listings", value: products.length },
+          { label: "Active Listings", value: products.length  },
           { label: "Pending Listings", value: "2 Products" },
           { label: "Total Views", value: "143 Views" },
         ].map((card, idx) => (

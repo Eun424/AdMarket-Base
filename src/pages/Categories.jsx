@@ -20,8 +20,21 @@ const Categories = () => {
     dispatch(getCategories())
   }, [])
 
-  if(loadingCategories) return <Loader message='Fetching categories.....'/>
-  if(error) return <div>{error}</div>
+
+  if(loadingCategories) return <Loader message='Fetching products.....'/>
+if (error) {
+  return (
+    <div className="flex flex-col items-center justify-center py-10">
+      <p className="text-red-500 font-medium">{error}</p>
+      <button
+        onClick={() => dispatch(getCategories())}
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+      >
+        Retry
+      </button>
+    </div>
+  );
+}
 
 
   const handleSubCategoryClick = (subCategoryId) => {

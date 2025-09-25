@@ -14,7 +14,7 @@ const Profile = () => {
   const { theme } = useContext(themeContext);
   const dispatch = useDispatch();
   const { profile, loading } = useSelector((store) => store.auth);
-  const {products} = useSelector((store) => store.products)
+  const { products } = useSelector((store) => store.products)
   const [file, setFile] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [formData, setFormData] = useState({});
@@ -38,13 +38,36 @@ const Profile = () => {
     setFormData({ ...formData, [key]: e.target.value });
   };
 
-  //To save the form
-  const handleSave = () => {
-    const result = dispatch(updateSellerProfile(formData)).unwrap();
-    console.log("updated seller", result);
-    setIsEditing(false); // only close if update succeeded
 
-  };
+  // };
+  const handleSave = async () => {
+  const data = new FormData();
+  data.append("firstName", formData.firstName);
+  data.append("lastName", formData.lastName);
+  data.append("phone", formData.phone);
+  data.append("whatsapp", formData.whatsapp);
+  data.append("university", formData.university);
+  // ...add other fields
+
+  if (file) {
+    data.append("profilePic", file); // only upload on Save
+  }
+
+  try {
+    const res = await api.put("/auth/profile/edit", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    if (res.data.success) {
+      toast.success("Profile updated successfully");
+      dispatch(updateSellerProfile(res.data.seller)); // update redux with new profile
+      setFormData(res.data.seller)
+      setIsEditing(false);
+    }
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "Update failed");
+  }
+};
 
   const handleCancel = () => {
     setIsEditing(false);
@@ -57,32 +80,6 @@ const Profile = () => {
     const selectedFile = e.target.files[0]
     setFile(selectedFile)
     console.log(selectedFile)
-  }
-
-
-  const handleUpload = async (e) => {
-    e.preventDefault()
-setErrorMessage(null)
-    const formData = new FormData()
-    formData.append('profilePic', file)
-
-    try {
-      const response = await api.post('/auth/profileUpload', formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      })
-
-      if (response?.data?.success) {
-        toast.success(response?.data?.message)
-      }
-
-      console.log(response.data)
-    } catch (error) {
-      console.log(error)
-      toast.error(error?.response?.data?.message)
-      setErrorMessage(error?.response?.data?.message)
-    }
   }
 
 
@@ -101,8 +98,8 @@ setErrorMessage(null)
         </h2>
         {isEditing ? (
           <div className="space-x-3">
-            <button type="button" onClick={handleSave} className="text-sm text-green-600 hover:underline">
-              Save
+            <button type="button" onClick={handleSave} disabled={loading} className="text-sm text-green-600 hover:underline">
+              {loading ? 'Saving....': 'Save'}
             </button>
             <button type="button" onClick={handleCancel} className="text-sm text-gray-500 hover:underline">
               Cancel
@@ -125,7 +122,7 @@ setErrorMessage(null)
       >
         {
           isEditing ? (
-            <form action="/auth/profileUpload" onSubmit={handleUpload}>
+            <div >
               <div className="relative w-full md:col-span-2">
                 <label className="block mb-1">Upload Profile Picture</label>
                 <div className='text-red-500 text-sm font-light'>{errorMessage ? errorMessage : null}</div>
@@ -141,11 +138,11 @@ setErrorMessage(null)
                 <p className="text-sm mt-1 text-gray-500">Max 2MB</p>
               </div>
 
-              <button className='bg-blue-300 text-center p-1' type='submit'>Upload</button>
-            </form>
+              {/* <button className='bg-blue-300 text-center p-1' type='submit'>Upload</button> */}
+            </div>
           ) : (
             <div className="flex items-center gap-4">
-              <img src={formData.profilePic || prof} alt="" className="w-16 h-16 object-cover rounded-full" />
+              <img src={formData.profilePic || prof}alt="" className="w-16 h-16 object-cover rounded-full" />
               <div>
                 <h2
                   className={`text-base font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'
@@ -299,7 +296,7 @@ setErrorMessage(null)
             {isEditing ? (
               <input
                 type="text"
-                value={formData.campus || ''}
+                value={formData.university || ''}
                 onChange={handleChange('campus')}
                 className={`mt-1 w-full border rounded px-3 py-2 ${theme === 'dark'
                   ? 'bg-gray-700 border-gray-600 text-gray-100'
@@ -307,7 +304,7 @@ setErrorMessage(null)
                   }`}
               />
             ) : (
-              <p>{formData.campus}</p>
+              <p>{formData.university}</p>
             )}
           </div>
 

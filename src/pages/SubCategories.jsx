@@ -42,15 +42,15 @@ const SubCategories = () => {
               onClick={() => handleProductClick(product._id)}
             >
               <img
-                src={product.productImage}
+                src={product.productImage[0]}
                 alt={product.productName}
                 className="w-full md:h-70 h-40 object-cover mb-2 rounded"
               />
-              <h3 className={`font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
+              <p className={`font-normal ${theme === 'dark' ? 'text-gray-200' : 'text-gray-500'}`}>
                 {product.productName}
-              </h3>
+              </p>
               <h3 className={`font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
-                {product.price}GHS
+                GH₵ {product.price}
               </h3>
             </div>
           ))}

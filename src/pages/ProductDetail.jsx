@@ -4,9 +4,11 @@ import { Link, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { themeContext } from "../context/ThemeContext"; 
 import { getProductById } from "../store/features/productsSlice";
+import ProductImageCarousel from "../helpers/ProductImageCarousel";
 
 const ProductDetail = () => {
   const { theme } = useContext(themeContext); 
+  const {sellerId} = useParams()
   const { productId } = useParams();
   const dispatch = useDispatch()
   const {products} = useSelector((state) => state.products);
@@ -23,49 +25,43 @@ const ProductDetail = () => {
     <div className={`min-h-screen flex items-center justify-center p-6 ${theme === "dark" ? "bg-gray-900" : "bg-gray-100"}`}>
       <div className={`max-w-3xl w-full overflow-hidden flex flex-col shadow-lg ${theme === "dark" ? "bg-gray-800 text-gray-200" : "bg-white text-gray-800"}`}>
         <div className={`flex items-center justify-center p-8 ${theme === "dark" ? "bg-gray-700" : "bg-gray-200"}`}>
-          <img
-            src={products.productImage}
-            alt={products.productName}
-            className="w-72 object-contain"
-          />
+          <ProductImageCarousel images={products.productImage} />
         </div>
 
-        <div className="p-8 space-y-6">
+        <div className="p-8 space-y-3">
           <div>
-            <h3 className={`text-sm uppercase font-medium ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
-              {products.brand}
-            </h3>
-            <h1 className="text-3xl font-bold">
+            <p className="text-3xl font-bold">
               {products.productName}
-            </h1>
-            <p className={`mt-2 text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+            </p>
+            <p className={` text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
               {products.description || "A rich, non-greasy, fast-absorbing moisturizing cream with essential ceramides and hyaluronic acid."}
             </p>
+            <h3 className={`text-sm mt-1 font-normal flex gap-1 ${theme === "dark" ? "text-gray-400" : "text-blue-400"}`}>
+              <h4 className="text-gray-500">Brand:</h4> {products.brand}
+            </h3>
           </div>
 
           <div className={`text-xl font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
-            GHS{products.price}
+            GH₵ {products.price}
           </div>
 
           {/* Key Features */}
           <div>
-            <h4 className={`text-sm font-medium uppercase mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+            <h4 className={`text-sm font-medium uppercase mb-1 mt-2 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
               Key Features
             </h4>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              {products.features?.map((feature, index) => (
-                <div key={index} className="flex items-start gap-2">
-                  <span className="mt-1">•</span>
-                  <p className={`${theme === "dark" ? "text-gray-200" : "text-gray-700"}`}>{feature}</p>
-                </div>
-              ))}
+            <h3 className="flex gap-1 text-sm text-blue-400">
+              <h4 className="text-gray-500">Location/Campus:</h4>{products?.university?.name}
+            </h3>
+            <div className="flex gap-1 text-sm text-blue-400">
+              <h4 className="text-gray-500">Gender:</h4> {products?.gender?.name}
             </div>
           </div>
 
           {/* Buttons + WhatsApp/Phone icons */}
           <div className="flex items-center gap-4 pt-4">
             <Link 
-              to='/buyer'
+              to={`/sellerProfile/${products.Seller}`}
               className={`px-6 py-2 rounded-md transition ${theme === "dark" ? "bg-gray-600 hover:bg-gray-500 text-white" : "bg-gray-800 hover:bg-gray-700 text-white"}`}
             >
               View Seller's Profile
