@@ -204,6 +204,7 @@ const MyListings = () => {
             </button>
 
             {/*Pass both props */}
+            
             <AddProduct editProduct={editProduct} setShowModal={setShowModal} />
           </div>
         </div>
