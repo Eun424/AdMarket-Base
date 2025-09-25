@@ -26,7 +26,7 @@ const MyListings = () => {
   }, [])
 
 
-  const handleDelete = async (productId) => {
+ 
   const handleDelete = async (productId) => {
     try {
       const res = await api.delete(`/product/delete/${productId}`)
@@ -212,5 +212,6 @@ const MyListings = () => {
     </div>
   );
 };
+
 
 export default MyListings;

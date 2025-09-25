@@ -159,7 +159,11 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
     });
 
    
-
+if (formData.productImage) {
+    Array.from(formData.productImage).forEach((file) => {
+      data.append("productImage", file);
+    });
+  }
 
     try {
       if (editProduct) {
