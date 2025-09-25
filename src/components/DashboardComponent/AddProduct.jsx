@@ -15,12 +15,14 @@ const AddListingForm = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [university, setUniversity] = useState([]);
   const [genders, setGenders] = useState([]);
+  const[errorMessage, setErrorMessage] = useState(null)
+  const [error, setError] = useState(null)
   const [formData, setFormData] = useState({
     productName: '',
     description: '',
     brand: '',
     price: '',
-    campus: '',
+    university: '',
     whatsapp: '',
     phone: '',
     gender: '',
@@ -51,6 +53,8 @@ const AddListingForm = () => {
       setSubCategories(res.data.subcategories);
     } catch (error) {
       console.error("Error fetching subcategories", error);
+      setErrorMessage(error?.response?.data?.message)
+      toast.error(error?.response?.data?.message)
     }
   };
 
@@ -89,19 +93,38 @@ const AddListingForm = () => {
     data.append("description", formData.description);
     data.append("brand", formData.brand);
     data.append("price", formData.price);
-    data.append("campus", formData.campus);
     data.append("whatsapp", formData.whatsapp);
     data.append("phone", formData.phone);
     data.append("gender", formData.gender);
     data.append("category", formData.category);
     data.append("subCategory", formData.subCategory);
-    data.append("university", formData.campus);
+    data.append("university", formData.university);
+
+    if (! formData.productName) { 
+     return toast.error('Product name is required')
+       }
+    if (!formData.price) {
+      return toast.error('Price is required')
+    }
+  
+    if (!formData.category) {
+       return toast.error('Please select a category')
+    }
+    if (!formData.subCategory) {
+        return toast.error('Please select a sub-category')
+    }
+
+
+    if (!formData.productImage || formData.productImage.length === 0) {
+       return toast.error("At least one product image is required");
+    }
 
     if (formData.productImage) {
       Array.from(formData.productImage).forEach((file) => {
         data.append("productImage", file);
       });
     }
+
 
     try {
       const res = await api.post("/product/addProduct", data, formData, {
@@ -115,6 +138,13 @@ const AddListingForm = () => {
       return res.data;
     } catch (error) {
       console.error("Error adding product", error);
+      const message =
+    error?.response?.data?.message ||
+    error?.message ||
+    "Something went wrong. Please try again.";
+      setError(message)
+       setErrorMessage(message)
+      toast.error(message)
     }
   };
 
@@ -132,11 +162,12 @@ const AddListingForm = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Product Name */}
         <div>
-          <label className="block mb-2 font-medium">Product Name</label>
+          <label className="block mb-2 font-medium">Product Name <span className="text-red-500">*</span></label>
           <input
             value={formData.productName}
             onChange={(e) => setFormData({ ...formData, productName: e.target.value })}
             type="text"
+            required
             className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
               ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
             placeholder="e.g. Sneakers"
@@ -145,10 +176,11 @@ const AddListingForm = () => {
 
         {/* Price */}
         <div>
-          <label className="block mb-2 font-medium">Price (GHS)</label>
+          <label className="block mb-2 font-medium">Price (GHS) <span className="text-red-500">*</span></label>
           <input
             type="number"
             value={formData.price}
+            required
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
             className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
               ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
@@ -191,13 +223,16 @@ const AddListingForm = () => {
 
     {/* Campus & Contact Info */}
     <div>
-      <h3 className="text-lg font-semibold mb-4 border-b pb-2">Campus & Contact</h3>
+      <h3 className="text-lg font-semibold mb-4 border-b pb-2">Campus & Contact </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block mb-2 font-medium">Campus</label>
+          <label className="block mb-2 font-medium">
+            Campus <span className="text-red-500">*</span>
+            </label>
           <select
-            value={formData.campus}
-            onChange={(e) => setFormData({ ...formData, campus: e.target.value })}
+            value={formData.university}
+            required
+            onChange={(e) => setFormData({ ...formData, university: e.target.value })}
             className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
               ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
           >
@@ -211,11 +246,13 @@ const AddListingForm = () => {
         </div>
 
         <div>
-          <label className="block mb-2 font-medium">Phone Number</label>
+          <label className="block mb-2 font-medium">
+            Phone Number <span className="text-red-500">*</span>
+            </label>
           <input
             type="text"
             value={profile.phone || formData.phone}
-            // readOnly= {profile.phone}
+            readOnly= {profile.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
               ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
@@ -224,11 +261,14 @@ const AddListingForm = () => {
         </div>
 
         <div>
-          <label className="block mb-2 font-medium">WhatsApp Number</label>
+          <label className="block mb-2 font-medium">
+            WhatsApp Number <span className="text-red-500">*</span>
+            </label>
           <input
             type="text"
             value={profile.whatsapp || formData.whatsapp}
-            // readOnly={!!profile.whatsapp}
+            readOnly={!!profile.whatsapp}
+            required
             onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
             className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
               ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
@@ -243,7 +283,9 @@ const AddListingForm = () => {
       <h3 className="text-lg font-semibold mb-4 border-b pb-2">Category</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block mb-2 font-medium">Category</label>
+          <label className="block mb-2 font-medium">
+            Category <span className="text-red-500">*</span>
+            </label>
           <select
             value={formData.category}
             onChange={handleCategoryChange}
@@ -261,7 +303,9 @@ const AddListingForm = () => {
 
         {subCategories.length > 0 && (
           <div>
-            <label className="block mb-2 font-medium">Subcategory</label>
+            <label className="block mb-2 font-medium">
+  Subcategory <span className="text-red-500">*</span>
+</label>
             <select
               value={formData.subCategory}
               onChange={(e) => setFormData({ ...formData, subCategory: e.target.value })}
@@ -295,12 +339,15 @@ const AddListingForm = () => {
 
     {/* Upload */}
     <div>
-      <h3 className="text-lg font-semibold mb-4 border-b pb-2">Upload Images</h3>
+      <h3 className="text-lg font-semibold mb-4 border-b pb-2">
+        Upload Images <span className="text-red-500">*</span>
+      </h3>
       <div className="relative">
         <input
           type="file"
           accept="image/*"
           multiple
+          required
           onChange={(e) => setFormData({ ...formData, productImage: e.target.files })}
           className={`w-full rounded-lg px-4 py-2 pr-10 border focus:outline-none focus:ring-2 focus:ring-blue-500
             ${theme === "dark" ? "bg-gray-800 border-gray-700 text-gray-200 file:text-gray-300" : "bg-white border-gray-300 text-gray-800"}`}
