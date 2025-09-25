@@ -6,22 +6,20 @@ import { IoCloseCircleSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsBySeller } from '../../store/features/productsSlice';
 
-
 const MyListings = () => {
   const [showModal, setShowModal] = useState(false);
-  const dispatch = useDispatch()
-  const { products } = useSelector((store) => store.products)
-  console.log(products)
+  const [editProduct, setEditProduct] = useState(null);
+  const dispatch = useDispatch();
+  const { products } = useSelector((store) => store.products);
   const { theme } = useContext(themeContext);
 
   useEffect(() => {
-
     try {
-      dispatch(getProductsBySeller())
+      dispatch(getProductsBySeller());
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }, [])
+  }, [dispatch]);
 
   return (
     <div className={`p-2 min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
@@ -32,7 +30,10 @@ const MyListings = () => {
         </h1>
         <button
           className="bg-blue-600 text-white px-4 py-2 rounded"
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            setEditProduct(null); 
+            setShowModal(true);
+          }}
         >
           + Add New Listing
         </button>
@@ -53,7 +54,7 @@ const MyListings = () => {
               </tr>
             </thead>
             <tbody>
-              {products.length > 0 ? (
+              {products?.length > 0 ? (
                 products.map((product) => (
                   <tr
                     key={product._id}
@@ -67,30 +68,34 @@ const MyListings = () => {
                       />
                       <span>{product.productName}</span>
                     </td>
-                    <td className="p-3">{product.category.name}</td>
-                    <td className="p-3">{product.subCategory.name}</td>
+                    <td className="p-3">{product.category?.name}</td>
+                    <td className="p-3">{product.subCategory?.name}</td>
                     <td className="p-3">{product.price}</td>
                     <td className="p-3">
-                      <FaEdit className="text-blue-500 cursor-pointer" />
+                      <FaEdit
+                        className="text-blue-500 cursor-pointer"
+                        onClick={() => {
+                          setEditProduct(product); 
+                          setShowModal(true);   
+                        }}
+                      />
                     </td>
                     <td className="p-3">
                       <FaTrash className="text-red-500 cursor-pointer" />
                     </td>
                   </tr>
-
-                ))) :
-                (<tr>
+                ))
+              ) : (
+                <tr>
                   <td colSpan="6" className="text-center py-4 text-gray-500">
                     No products posted yet
                   </td>
-                </tr>)
-              }
-
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
-
 
       {/* Modal */}
       {showModal && (
@@ -108,12 +113,13 @@ const MyListings = () => {
             >
               <IoCloseCircleSharp size={24} />
             </button>
-            <AddProduct />
+
+            {/*Pass both props */}
+            <AddProduct editProduct={editProduct} setShowModal={setShowModal} />
           </div>
         </div>
       )}
     </div>
-
   );
 };
 
