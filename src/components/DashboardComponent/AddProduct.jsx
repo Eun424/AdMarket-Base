@@ -151,6 +151,9 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
     if (!formData.price) return toast.error("Price is required");
     if (!formData.category) return toast.error("Please select a category");
     if (!formData.subCategory) return toast.error("Please select a subcategory");
+    if (!formData.university) return toast.error("Please select a campus");
+    if (!formData.phone) return toast.error("Please enter phone number");
+    if (!formData.whatsapp) return toast.error("Please enter whatsapp number");
 
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
@@ -212,7 +215,7 @@ if (formData.productImage) {
           <h3 className="text-lg font-semibold mb-4 border-b pb-2">Product Info</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block mb-2 font-medium">Product Name *</label>
+              <label className="block mb-2 font-medium">Product Name <span className="text-red-500">*</span></label>
               <input
                 value={formData.productName}
                 onChange={(e) =>
@@ -221,6 +224,7 @@ if (formData.productImage) {
                 type="text"
                 required
                 className="w-full rounded-lg px-4 py-2 border focus:ring-2 focus:ring-blue-500"
+                placeholder="Example; Sneakers etc"
               />
             </div>
 
@@ -248,11 +252,12 @@ if (formData.productImage) {
                   setFormData({ ...formData, brand: e.target.value })
                 }
                 className="w-full rounded-lg px-4 py-2 border focus:ring-2 focus:ring-blue-500"
+                placeholder="Brand"
               />
             </div>
 
             <div>
-              <label className="block mb-2 font-medium">Gender (optional)</label>
+              <label className="block mb-2 font-medium">Gender(optional)</label>
               <select
                 value={formData.gender}
                 onChange={(e) =>
@@ -276,7 +281,7 @@ if (formData.productImage) {
           <h3 className="text-lg font-semibold mb-4 border-b pb-2">Campus & Contact</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block mb-2 font-medium">Campus (optional)</label>
+              <label className="block mb-2 font-medium">Campus <span className="text-red-500">*</span></label>
               <select
                 value={formData.university}
                 onChange={(e) =>
@@ -294,7 +299,7 @@ if (formData.productImage) {
             </div>
 
             <div>
-              <label className="block mb-2 font-medium">Phone *</label>
+              <label className="block mb-2 font-medium">Phone <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 value={formData.phone}
@@ -306,7 +311,7 @@ if (formData.productImage) {
             </div>
 
             <div>
-              <label className="block mb-2 font-medium">WhatsApp *</label>
+              <label className="block mb-2 font-medium">WhatsApp <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 value={formData.whatsapp}
@@ -324,7 +329,7 @@ if (formData.productImage) {
           <h3 className="text-lg font-semibold mb-4 border-b pb-2">Category</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block mb-2 font-medium">Category *</label>
+              <label className="block mb-2 font-medium">Category <span className="text-red-500">*</span></label>
               <select
                 value={formData.category}
                 onChange={(e) =>
@@ -379,7 +384,7 @@ if (formData.productImage) {
 
         {/* Upload Images */}
         <div className="relative">
-          <label className="block mb-2 font-medium">Upload Images *</label>
+          <label className="block mb-2 font-medium">Upload Images <span className="text-red-500">*</span></label>
 
           {/* Show existing images if editing */}
           {editProduct?.productImage && editProduct.productImage.length > 0 && (
