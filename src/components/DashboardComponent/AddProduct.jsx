@@ -95,13 +95,33 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
   data.append("description", formData.description);
   data.append("brand", formData.brand);
   data.append("price", formData.price);
-  data.append("campus", formData.campus);
   data.append("whatsapp", formData.whatsapp);
   data.append("phone", formData.phone);
   data.append("gender", formData.gender?._id || formData.gender);
   data.append("category", formData.category?._id || formData.category);
   data.append("subCategory", formData.subCategory?._id || formData.subCategory);
-  data.append("university", formData.campus);
+  data.append("university", formData.university);
+
+  if (! formData.productName) {
+     return toast.error('Product name is required')
+       }
+    if (!formData.price) {
+      return toast.error('Price is required')
+    }
+ 
+    if (!formData.category) {
+       return toast.error('Please select a category')
+    }
+    if (!formData.subCategory) {
+        return toast.error('Please select a sub-category')
+    }
+
+
+    if (!formData.productImage || formData.productImage.length === 0) {
+       return toast.error("At least one product image is required");
+    }
+
+
 
   if (formData.productImage) {
     Array.from(formData.productImage).forEach((file) => {
@@ -120,6 +140,7 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
       if (res?.data?.success) {
         toast.success("Product updated successfully");
       }
+
     } else {
       //  ADD 
       res = await api.post("/product/addProduct", data, {
@@ -131,6 +152,8 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
       }
       console.log(res.data)
       return res.data;
+      }
+
     } catch (error) {
       console.error("Error adding product", error);
       const message =
@@ -141,7 +164,8 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
        setErrorMessage(message)
       toast.error(message)
     }
-  };
+;
+};
 
   return (
     <div
@@ -413,7 +437,7 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
       </form>
     </div>
   );
-};
+
 }
 
 export default AddListingForm;

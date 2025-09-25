@@ -8,6 +8,7 @@ import ProductImageCarousel from "../helpers/ProductImageCarousel";
 
 const ProductDetail = () => {
   const { theme } = useContext(themeContext); 
+  const {sellerId} = useParams()
   const { productId } = useParams();
   const dispatch = useDispatch()
   const {products} = useSelector((state) => state.products);
@@ -60,7 +61,7 @@ const ProductDetail = () => {
           {/* Buttons + WhatsApp/Phone icons */}
           <div className="flex items-center gap-4 pt-4">
             <Link 
-              to='/buyer'
+              to={`/sellerProfile/${products.Seller}`}
               className={`px-6 py-2 rounded-md transition ${theme === "dark" ? "bg-gray-600 hover:bg-gray-500 text-white" : "bg-gray-800 hover:bg-gray-700 text-white"}`}
             >
               View Seller's Profile

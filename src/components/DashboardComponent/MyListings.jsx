@@ -23,7 +23,7 @@ const MyListings = () => {
     } catch (error) {
       console.log(error);
     }
-}, [])}
+}, [])
 
 
   const handleDelete = async(productId) => {
@@ -90,8 +90,8 @@ const MyListings = () => {
                       />
                       <span>{product.productName}</span>
                     </td>
-                    <td className="p-3">{product?.category??.name}</td>
-                    <td className="p-3">{product?.subCategory??.name}</td>
+                    <td className="p-3">{product?.category?.name}</td>
+                    <td className="p-3">{product?.subCategory?.name}</td>
                     <td className="p-3">{product.price}</td>
                     <td className="p-3">
                       <FaEdit

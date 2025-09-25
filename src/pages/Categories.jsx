@@ -19,7 +19,7 @@ const Categories = () => {
   useEffect(() => {
     dispatch(getCategories())
   }, [])
-  
+
 
   if(loadingCategories) return <Loader message='Fetching products.....'/>
 if (error) {
