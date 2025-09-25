@@ -6,32 +6,33 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 
-const AddListingForm = () => {
+const AddListingForm = ({ editProduct, setShowModal }) => {
   const { theme } = useContext(themeContext);
-  const navigate = useNavigate()
-  const {profile} = useSelector((store) => store.auth)
-  console.log(profile)
+  const navigate = useNavigate();
+  const { profile } = useSelector((store) => store.auth);
+
   const [category, setCategory] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [university, setUniversity] = useState([]);
   const [genders, setGenders] = useState([]);
   const[errorMessage, setErrorMessage] = useState(null)
   const [error, setError] = useState(null)
+
   const [formData, setFormData] = useState({
-    productName: '',
-    description: '',
-    brand: '',
-    price: '',
-    university: '',
-    whatsapp: '',
-    phone: '',
-    gender: '',
-    category: '',
-    subCategory: '',
-    productImage: null
-  })
+    productName: editProduct?.productName || "",
+    description: editProduct?.description || "",
+    brand: editProduct?.brand?._id || "",
+    price: editProduct?.price || "",
+    campus: editProduct?.campus || "",
+    whatsapp: editProduct?.whatsapp || "",
+    phone: editProduct?.phone || "",
+    gender: editProduct?.gender || "",
+    category: editProduct?.category?._id || "",
+    subCategory: editProduct?.subCategory?._id || "",
+    productImage: null,
+  });
 
-
+  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -44,6 +45,7 @@ const AddListingForm = () => {
     fetchCategories();
   }, []);
 
+  // Fetch subcategories when category changes
   const handleCategoryChange = async (e) => {
     const categoryId = e.target.value;
     setFormData({ ...formData, category: categoryId });
@@ -58,76 +60,69 @@ const AddListingForm = () => {
     }
   };
 
-
+  //Fetch universities
   useEffect(() => {
     const fetchCampus = async () => {
       try {
-        const res = await api.get('/product/universities')
-        setUniversity(res.data.universities)
+        const res = await api.get("/product/universities");
+        setUniversity(res.data.universities);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    fetchCampus()
-  }, [])
+    };
+    fetchCampus();
+  }, []);
 
-
+  // Fetch genders
   useEffect(() => {
     const fetchGender = async () => {
       try {
-        const res = await api.get('/product/gender')
-        setGenders(res.data.gender)
+        const res = await api.get("/product/gender");
+        setGenders(res.data.gender);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    fetchGender()
-  }, [])
+    };
+    fetchGender();
+  }, []);
+
+  // Handle form submit (Add or Edit)
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const data = new FormData();
+  data.append("productName", formData.productName);
+  data.append("description", formData.description);
+  data.append("brand", formData.brand);
+  data.append("price", formData.price);
+  data.append("campus", formData.campus);
+  data.append("whatsapp", formData.whatsapp);
+  data.append("phone", formData.phone);
+  data.append("gender", formData.gender?._id || formData.gender);
+  data.append("category", formData.category?._id || formData.category);
+  data.append("subCategory", formData.subCategory?._id || formData.subCategory);
+  data.append("university", formData.campus);
+
+  if (formData.productImage) {
+    Array.from(formData.productImage).forEach((file) => {
+      data.append("productImage", file);
+    });
+  }
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const data = new FormData();
-    data.append("productName", formData.productName);
-    data.append("description", formData.description);
-    data.append("brand", formData.brand);
-    data.append("price", formData.price);
-    data.append("whatsapp", formData.whatsapp);
-    data.append("phone", formData.phone);
-    data.append("gender", formData.gender);
-    data.append("category", formData.category);
-    data.append("subCategory", formData.subCategory);
-    data.append("university", formData.university);
-
-    if (! formData.productName) { 
-     return toast.error('Product name is required')
-       }
-    if (!formData.price) {
-      return toast.error('Price is required')
-    }
-  
-    if (!formData.category) {
-       return toast.error('Please select a category')
-    }
-    if (!formData.subCategory) {
-        return toast.error('Please select a sub-category')
-    }
-
-
-    if (!formData.productImage || formData.productImage.length === 0) {
-       return toast.error("At least one product image is required");
-    }
-
-    if (formData.productImage) {
-      Array.from(formData.productImage).forEach((file) => {
-        data.append("productImage", file);
+  try {
+    let res;
+    if (editProduct) {
+      //  EDIT
+      res = await api.put(`/product/${editProduct._id}`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-    }
-
-
-    try {
-      const res = await api.post("/product/addProduct", data, formData, {
+      if (res?.data?.success) {
+        toast.success("Product updated successfully");
+      }
+    } else {
+      //  ADD 
+      res = await api.post("/product/addProduct", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if(res?.data?.success) {
@@ -149,11 +144,13 @@ const AddListingForm = () => {
   };
 
   return (
-   <div
-  className={`w-full max-w-4xl mx-auto p-8 rounded-2xl shadow-lg transition-colors duration-300
-    ${theme === "dark" ? "bg-gray-900 text-gray-200" : "bg-white text-gray-800"}`}
->
-  <h2 className="text-3xl font-bold text-center mb-8">Add New Product</h2>
+    <div
+      className={`w-full max-w-4xl mx-auto p-8 rounded-2xl shadow-lg transition-colors duration-300
+        ${theme === "dark" ? "bg-gray-900 text-gray-200" : "bg-white text-gray-800"}`}
+    >
+      <h2 className="text-3xl font-bold text-center mb-8">
+        {editProduct ? "Edit Product" : "Add New Product"}
+      </h2>
 
   <form className="space-y-8" onSubmit={handleSubmit}>
     {/* Product Info */}
@@ -188,38 +185,50 @@ const AddListingForm = () => {
           />
         </div>
 
-        {/* Brand */}
-        <div>
-          <label className="block mb-2 font-medium">Brand</label>
-          <input
-            type="text"
-            value={formData.brand}
-            onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-            className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
-              ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
-            placeholder="e.g. Nike"
-          />
-        </div>
+            {/* Brand */}
+            <div>
+              <label className="block mb-2 font-medium">Brand</label>
+              <input
+                type="text"
+                value={formData.brand}
+                onChange={(e) =>
+                  setFormData({ ...formData, brand: e.target.value })
+                }
+                className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
+                  ${
+                    theme === "dark"
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
+                  }`}
+                placeholder="e.g. Nike"
+              />
+            </div>
 
-        {/* Gender */}
-        <div>
-          <label className="block mb-2 font-medium">Gender</label>
-          <select
-            className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
-              ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
-            value={formData.gender}
-            onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-          >
-            <option value="">Select Gender</option>
-            {genders.map((gender) => (
-              <option key={gender._id} value={gender._id}>
-                {gender.name}
-              </option>
-            ))}
-          </select>
+            {/* Gender */}
+            <div>
+              <label className="block mb-2 font-medium">Gender</label>
+              <select
+                className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
+                  ${
+                    theme === "dark"
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
+                  }`}
+                value={formData.gender}
+                onChange={(e) =>
+                  setFormData({ ...formData, gender: e.target.value })
+                }
+              >
+                <option value="">Select Gender</option>
+                {genders.map((gender) => (
+                  <option key={gender._id} value={gender._id}>
+                    {gender.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
     {/* Campus & Contact Info */}
     <div>
@@ -324,52 +333,87 @@ const AddListingForm = () => {
       </div>
     </div>
 
-    {/* Description */}
-    <div>
-      <h3 className="text-lg font-semibold mb-4 border-b pb-2">Description</h3>
-      <textarea
-        rows={4}
-        value={formData.description}
-        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-        className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
-          ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
-        placeholder="Enter product description"
-      />
-    </div>
+        {/*Description */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4 border-b pb-2">Description</h3>
+          <textarea
+            rows={4}
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+            className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
+              ${
+                theme === "dark"
+                  ? "bg-gray-800 border-gray-700"
+                  : "bg-white border-gray-300"
+              }`}
+            placeholder="Enter product description"
+          />
+        </div>
 
-    {/* Upload */}
-    <div>
-      <h3 className="text-lg font-semibold mb-4 border-b pb-2">
+        {/*Upload Images */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4 border-b pb-2">
         Upload Images <span className="text-red-500">*</span>
       </h3>
-      <div className="relative">
-        <input
-          type="file"
-          accept="image/*"
-          multiple
+
+          {/*Show current images only when editing */}
+          {editProduct?.productImage && (
+            <div className="mb-4">
+              <p className="font-medium mb-2">Current Image(s):</p>
+              <div className="flex gap-4 flex-wrap">
+                {(Array.isArray(editProduct.productImage)
+                  ? editProduct.productImage
+                  : [editProduct.productImage]
+                ).map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    alt={`Product ${index + 1}`}
+                    className="w-32 h-32 object-cover rounded-lg border"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="relative">
+            <input
+              type="file"
+              accept="image/*"
+              multiple
           required
-          onChange={(e) => setFormData({ ...formData, productImage: e.target.files })}
-          className={`w-full rounded-lg px-4 py-2 pr-10 border focus:outline-none focus:ring-2 focus:ring-blue-500
-            ${theme === "dark" ? "bg-gray-800 border-gray-700 text-gray-200 file:text-gray-300" : "bg-white border-gray-300 text-gray-800"}`}
-        />
-        <FaCamera className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 pointer-events-none" />
-        <p className="text-sm mt-2 text-gray-500">Max 10MB, multiple files allowed</p>
-      </div>
-    </div>
+              onChange={(e) =>
+                setFormData({ ...formData, productImage: e.target.files })
+              }
+              className={`w-full rounded-lg px-4 py-2 pr-10 border focus:outline-none focus:ring-2 focus:ring-blue-500
+                ${
+                  theme === "dark"
+                    ? "bg-gray-800 border-gray-700 text-gray-200 file:text-gray-300"
+                    : "bg-white border-gray-300 text-gray-800"
+                }`}
+            />
+            <FaCamera className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 pointer-events-none" />
+            <p className="text-sm mt-2 text-gray-500">
+              Max 10MB, multiple files allowed
+            </p>
+          </div>
+        </div>
 
-    {/* Submit */}
-    <div className="flex justify-center">
-      <button
-        type="submit"
-        className="px-8 py-3 rounded-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white transition"
-      >
-        Add Product
-      </button>
+        {/*Submit Button */}
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="px-8 py-3 rounded-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white transition"
+          >
+            {editProduct ? "Update Product" : "Add Product"}
+          </button>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
-
   );
 };
+}
 
 export default AddListingForm;
