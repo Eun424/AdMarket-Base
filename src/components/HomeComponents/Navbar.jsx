@@ -1,12 +1,28 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { IoIosSearch } from 'react-icons/io'
 import { Link } from 'react-router'
 import { FaMoon, FaSun } from 'react-icons/fa'
 import logo from '../../assets/images/logo6.png'
 import { themeContext } from '../../context/ThemeContext'
+import { useDispatch } from 'react-redux'
+import api from '../../Axios/axios'
 
 const Navbar = () => {
   const { theme, toggleTheme } = useContext(themeContext)
+  const [university, setUniversity] = useState([])
+  
+
+   useEffect(() => {
+    const fetchCampus = async () => {
+      try {
+        const res = await api.get("/product/universities");
+        setUniversity(res.data.universities);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCampus();
+  }, []);
 
   return (
     <div
@@ -58,18 +74,15 @@ const Navbar = () => {
             }`}
         >
           <select
-            id="university"
-            name="university"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${theme === 'dark'
-              ? 'border-gray-600 bg-gray-800 text-gray-200'
-              : 'border-gray-300 bg-white text-gray-700'
-              }`}
+            className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
+              ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
           >
-            <option value="">LEGON</option>
-            <option value="">UCC</option>
-            <option value="">KNUST</option>
-            <option value="">UHAS</option>
-            <option value="">UEW</option>
+            {/* <option value="">Select Campus</option> */}
+            {university.map((uni) => (
+              <option key={uni._id} value={uni._id}>
+                {uni.name}
+              </option>
+            ))}
           </select>
         </div>
 

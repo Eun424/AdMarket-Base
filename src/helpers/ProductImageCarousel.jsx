@@ -31,7 +31,7 @@ const ProductImageCarousel = ({ images = [] }) => {
       <img
         src={images[currentIndex]}
         alt={`Product ${currentIndex + 1}`}
-        className="w-full h-70 object-cover rounded-lg shadow-md"
+        className="w-full h-90 object-cover rounded-lg shadow-md"
       />
 
       {/* Prev Button */}

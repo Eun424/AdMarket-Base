@@ -23,24 +23,24 @@ const MyListings = () => {
     } catch (error) {
       console.log(error);
     }
-}, [])
+  }, [])
 
 
-  const handleDelete = async(productId) => {
+  const handleDelete = async (productId) => {
     try {
       const res = await api.delete(`/product/delete/${productId}`)
-    console.log(res.data)
+      console.log(res.data)
 
-    if(res?.data?.success) {
+      if (res?.data?.success) {
         toast.success(res?.data?.message)
         setShowDeleteModal(false)
         dispatch(getProductsBySeller())
-     }
+      }
 
     } catch (error) {
       console.log(error)
     }
-    
+
   }
 
   return (
@@ -53,7 +53,7 @@ const MyListings = () => {
         <button
           className="bg-blue-600 text-white px-4 py-2 rounded"
           onClick={() => {
-            setEditProduct(null); 
+            setEditProduct(null);
             setShowModal(true);
           }}
         >
@@ -92,21 +92,23 @@ const MyListings = () => {
                     </td>
                     <td className="p-3">{product?.category?.name}</td>
                     <td className="p-3">{product?.subCategory?.name}</td>
-                    <td className="p-3">{product.price}</td>
+                    <td className="p-3">{new Intl.NumberFormat('en-GH', { style: 'currency', currency: 'GHS' }).format(product.price)}
+                    </td>
                     <td className="p-3">
                       <FaEdit
                         className="text-blue-500 cursor-pointer"
                         onClick={() => {
-                          setEditProduct(product); 
-                          setShowModal(true);   
+                          setEditProduct(product);
+                          setShowModal(true);
                         }}
                       />
                     </td>
                     <td className="p-3" >
                       <FaTrash onClick={() => {
                         setDeleteId(product._id)
-                        setShowDeleteModal(true)}}
-                         className="text-red-500 cursor-pointer" />
+                        setShowDeleteModal(true)
+                      }}
+                        className="text-red-500 cursor-pointer" />
                     </td>
                   </tr>
                 ))
@@ -121,30 +123,30 @@ const MyListings = () => {
           </table>
 
           {showDeleteModal && (
-        <div
-          id="deleteModal"
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-        >
-          <div className="bg-white p-6 rounded shadow-lg w-96">
-            <h2 className="text-lg font-bold mb-4 text-black">Confirm Delete</h2>
-            <p className="mb-4 text-black">Are you sure you want to delete this item?</p>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => handleDelete(deleteId)}
-                className="px-4 py-2 bg-red-600 text-white rounded"
-              >
-                Yes
-              </button>
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 bg-gray-300 rounded"
-              >
-                No
-              </button>
+            <div
+              id="deleteModal"
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+            >
+              <div className="bg-white p-6 rounded shadow-lg w-96">
+                <h2 className="text-lg font-bold mb-4 text-black">Confirm Delete</h2>
+                <p className="mb-4 text-black">Are you sure you want to delete this item?</p>
+                <div className="flex justify-end gap-3">
+                  <button
+                    onClick={() => handleDelete(deleteId)}
+                    className="px-4 py-2 bg-red-600 text-white rounded"
+                  >
+                    Yes
+                  </button>
+                  <button
+                    onClick={() => setShowDeleteModal(false)}
+                    className="px-4 py-2 bg-gray-300 rounded"
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          )}
         </div>
       </div>
 

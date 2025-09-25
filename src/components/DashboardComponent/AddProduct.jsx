@@ -60,7 +60,7 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
     }
   };
 
-  //Fetch universities
+  // universities
   useEffect(() => {
     const fetchCampus = async () => {
       try {
@@ -73,7 +73,7 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
     fetchCampus();
   }, []);
 
-  // Fetch genders
+  //  genders
   useEffect(() => {
     const fetchGender = async () => {
       try {
@@ -146,12 +146,11 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
       res = await api.post("/product/addProduct", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      console.log(res.data)
       if(res?.data?.success) {
         toast.success('Product added successfully')
         navigate('/dashboard/listings')
       }
-      console.log(res.data)
-      return res.data;
       }
 
     } catch (error) {
@@ -201,6 +200,7 @@ const AddListingForm = ({ editProduct, setShowModal }) => {
           <input
             type="number"
             value={formData.price}
+            step="0.01" 
             required
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
             className={`w-full rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500
